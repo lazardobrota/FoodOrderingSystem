@@ -3,6 +3,7 @@ package com.usermanagment.backend.controller;
 import com.usermanagment.backend.dto.UserDto;
 import com.usermanagment.backend.dto.UserUpdateDto;
 import com.usermanagment.backend.service.IUserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,9 +22,23 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
 
     @PostMapping("/create")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserUpdateDto userUpdateDto) {
+    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserUpdateDto userUpdateDto) {
         return ResponseEntity.ok(userService.createUser(userUpdateDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody @Valid UserUpdateDto userUpdateDto) {
+        return ResponseEntity.ok(userService.updateUser(id, userUpdateDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.deleteUser(id));
     }
 }

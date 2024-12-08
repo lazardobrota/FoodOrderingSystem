@@ -26,10 +26,35 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public UserDto getUserById(Long id) {
+        User user = userRepo.findByUserId(id).orElse(null);
+
+        assert user != null;
+        return userMapper.userToUserDto(user);
+    }
+
+    @Override
     public UserDto createUser(UserUpdateDto userUpdateDto) {
         User user = userMapper.userUpdateDtoToUser(userUpdateDto);
 
         user = userRepo.save(user);
         return userMapper.userToUserDto(user);
+    }
+
+    @Override
+    public UserDto updateUser(Long id, UserUpdateDto userUpdateDto) {
+        User user = userRepo.findByUserId(id).orElse(null);
+
+        assert user != null;
+        user = userMapper.updateUser(user, userUpdateDto);
+        userRepo.save(user);
+
+        return userMapper.userToUserDto(user);
+    }
+
+    @Override
+    public boolean deleteUser(Long id) {
+        userRepo.deleteById(id);
+        return true;
     }
 }

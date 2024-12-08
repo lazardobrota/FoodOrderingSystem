@@ -45,4 +45,14 @@ public class UserMapper {
         user.setPermissionsBitMask(0); //TODO
         return user;
     }
+
+    public User updateUser(User user, UserUpdateDto userUpdateDto) {
+        user.setName(userUpdateDto.getName());
+        user.setLastname(userUpdateDto.getLastname());
+        user.setEmail(userUpdateDto.getEmail());
+        user.setPassword(userUpdateDto.getPassword());
+        user.setAddress(userUpdateDto.getAddress());
+        user.setPermissionsBitMask(0); //TODO
+        return user;
+    }
 }
