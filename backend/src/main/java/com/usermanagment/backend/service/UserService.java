@@ -6,6 +6,8 @@ import com.usermanagment.backend.mapper.UserMapper;
 import com.usermanagment.backend.model.User;
 import com.usermanagment.backend.repository.IUserRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +21,9 @@ public class UserService implements IUserService{
     private final IUserRepo userRepo;
     private final UserMapper userMapper;
 
-
     @Override
-    public List<UserDto> getAllUsers() {
-        return userRepo.findAll().stream().map(userMapper::userToUserDto).toList();
+    public Page<UserDto> getAllUsers(Pageable pageable) {
+        return userRepo.findAll(pageable).map(userMapper::userToUserDto);
     }
 
     @Override

@@ -3,12 +3,14 @@ package com.usermanagment.backend.service;
 import com.usermanagment.backend.dto.UserDto;
 import com.usermanagment.backend.dto.UserUpdateDto;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface IUserService {
 
-    List<UserDto> getAllUsers();
+    Page<UserDto> getAllUsers(Pageable pageable);
 
     UserDto getUserById(Long id);
 
