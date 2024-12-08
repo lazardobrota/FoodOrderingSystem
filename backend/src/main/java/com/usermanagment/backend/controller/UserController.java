@@ -1,6 +1,7 @@
 package com.usermanagment.backend.controller;
 
 import com.usermanagment.backend.dto.UserDto;
+import com.usermanagment.backend.dto.UserUpdateDto;
 import com.usermanagment.backend.service.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class UserController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.createUser(userDto));
+    public ResponseEntity<UserDto> createUser(@RequestBody UserUpdateDto userUpdateDto) {
+        return ResponseEntity.ok(userService.createUser(userUpdateDto));
     }
 }

@@ -1,6 +1,7 @@
 package com.usermanagment.backend.mapper;
 
 import com.usermanagment.backend.dto.UserDto;
+import com.usermanagment.backend.dto.UserUpdateDto;
 import com.usermanagment.backend.model.User;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,18 @@ public class UserMapper {
         user.setLastname(userDto.getLastname());
         user.setEmail(userDto.getEmail());
         user.setAddress(userDto.getAddress());
+        user.setPermissionsBitMask(0); //TODO
+        return user;
+    }
+
+    public User userUpdateDtoToUser(UserUpdateDto userUpdateDto) {
+        User user = new User();
+        user.setId(userUpdateDto.getId());
+        user.setName(userUpdateDto.getName());
+        user.setLastname(userUpdateDto.getLastname());
+        user.setEmail(userUpdateDto.getEmail());
+        user.setPassword(userUpdateDto.getPassword());
+        user.setAddress(userUpdateDto.getAddress());
         user.setPermissionsBitMask(0); //TODO
         return user;
     }

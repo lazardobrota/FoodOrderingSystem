@@ -15,8 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserUpdateDto {
 
-    @NotNull
-    private int id;
+    private Long id;
 
     @NotBlank
     @NotNull
@@ -43,7 +42,6 @@ public class UserUpdateDto {
     @Size(max = 32)
     private String password;
 
-    @NotBlank
     @NotNull
     private List<String> permissions;
 }

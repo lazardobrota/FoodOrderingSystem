@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDto {
 
-    private int id;
+    private Long id;
 
     @NotBlank
     @NotNull
