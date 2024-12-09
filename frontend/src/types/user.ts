@@ -4,7 +4,12 @@ export class UpdateUser {
   lastname: string = ""
   email: string = ""
   password: string = ""
-  permissions: Record<string, boolean> = {}
+  permissions: Record<string, boolean> = {
+    [UserPermissions.CanDeleteUsers]: false,
+    [UserPermissions.CanUpdateUsers]: false,
+    [UserPermissions.CanReadUsers]: false,
+    [UserPermissions.CanCreateUsers]: false,
+  }
 
 }
 

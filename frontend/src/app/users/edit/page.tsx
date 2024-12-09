@@ -58,19 +58,10 @@ export default function UserEdit() {
         [key]: !value
       }
     }))
-    console.log(JSON.stringify({
-      name: user.name,
-      lastname: user.lastname,
-      email: user.email,
-      password: user.password,
-      permission: user.permissions
-    }))
   }
 
   if (user === undefined)
     return;
-
-
 
   return (
     <div className="flex flex-col gap-14">
