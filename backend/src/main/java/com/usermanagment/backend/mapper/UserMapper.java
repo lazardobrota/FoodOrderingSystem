@@ -18,7 +18,6 @@ public class UserMapper {
                 user.getName(),
                 user.getLastname(),
                 user.getEmail(),
-                user.getAddress(),
                 List.of() //TODO
         );
     }
@@ -29,7 +28,6 @@ public class UserMapper {
         user.setName(userDto.getName());
         user.setLastname(userDto.getLastname());
         user.setEmail(userDto.getEmail());
-        user.setAddress(userDto.getAddress());
         user.setPermissionsBitMask(0); //TODO
         return user;
     }
@@ -41,7 +39,6 @@ public class UserMapper {
         user.setLastname(userUpdateDto.getLastname());
         user.setEmail(userUpdateDto.getEmail());
         user.setPassword(userUpdateDto.getPassword());
-        user.setAddress(userUpdateDto.getAddress());
         user.setPermissionsBitMask(0); //TODO
         return user;
     }
@@ -51,8 +48,18 @@ public class UserMapper {
         user.setLastname(userUpdateDto.getLastname());
         user.setEmail(userUpdateDto.getEmail());
         user.setPassword(userUpdateDto.getPassword());
-        user.setAddress(userUpdateDto.getAddress());
         user.setPermissionsBitMask(0); //TODO
         return user;
+    }
+
+    public UserUpdateDto userToUserUpdateDto(User user) {
+        return new UserUpdateDto(
+                user.getId(),
+                user.getName(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getPassword(),
+                List.of() //TODO
+        );
     }
 }

@@ -34,11 +34,6 @@ public class UserDto {
     @Size(max = 30)
     private String email;
 
-    @NotBlank
-    @NotNull
-    @Size(max = 50)
-    private String address;
-
     @NotNull
     private List<String> permissions;
 }

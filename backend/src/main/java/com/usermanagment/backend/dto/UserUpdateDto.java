@@ -34,11 +34,6 @@ public class UserUpdateDto {
 
     @NotBlank
     @NotNull
-    @Size(max = 50)
-    private String address;
-
-    @NotBlank
-    @NotNull
     @Size(max = 32)
     private String password;
 
