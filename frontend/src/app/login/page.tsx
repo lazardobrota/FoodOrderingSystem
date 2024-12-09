@@ -14,7 +14,7 @@ export default function Login() {
             <input className="bg-slate-400 rounded-sm" required name="password"/>
         </div>
 
-        <button className="bg-green-400 px-4 py-2 rounded-full">Submit</button>
+        <button className="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-full">Submit</button>
       </form>
     </div>
   )
