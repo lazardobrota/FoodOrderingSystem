@@ -7,7 +7,6 @@ import java.util.Map;
 
 @Getter
 public enum Permission {
-    Default       (0, "none"),
     CanReadUsers  (1 << 0, "can_read_users"),
     CanCreateUsers(1 << 1, "can_create_users"),
     CanUpdateUsers(1 << 2, "can_update_users"),

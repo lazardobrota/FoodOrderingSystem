@@ -39,7 +39,7 @@ export default function UserEdit() {
         lastname: user.lastname,
         email: user.email,
         password: user.password,
-        permission: user.permissions
+        permissions: user.permissions
       })
     })
       .then(res => res.json())
@@ -50,8 +50,26 @@ export default function UserEdit() {
       .catch((error) => console.log("this email already exists"))
   }
 
+  function hanleCheckBoxChange(key: string, value: boolean): void {
+    setUser((prevUser) => ({
+      ...prevUser,
+      permissions: {
+        ...prevUser.permissions,
+        [key]: !value
+      }
+    }))
+    console.log(JSON.stringify({
+      name: user.name,
+      lastname: user.lastname,
+      email: user.email,
+      password: user.password,
+      permission: user.permissions
+    }))
+  }
+
   if (user === undefined)
     return;
+
 
 
   return (
@@ -79,30 +97,14 @@ export default function UserEdit() {
           </div>
 
           <div className="size-full flex flex-col gap-2">
-            <div className="flex flex-row gap-2">
-              <div>
-                <input type="checkbox" />
+            {Object.entries(user.permissions).map(([key, value]) => (
+              <div key={key} className="flex flex-row gap-2">
+                <div>
+                  <input type="checkbox" checked={value} onChange={() => hanleCheckBoxChange(key, value)} />
+                </div>
+                <label>{key}</label>
               </div>
-              <label>Can read users </label>
-            </div>
-            <div className="flex flex-row gap-2">
-              <div>
-                <input type="checkbox" />
-              </div>
-              <label>Can create users </label>
-            </div>
-            <div className="flex flex-row gap-2">
-              <div>
-                <input type="checkbox" />
-              </div>
-              <label>Can update users </label>
-            </div>
-            <div className="flex flex-row gap-2">
-              <div>
-                <input type="checkbox" />
-              </div>
-              <label>Can delete users </label>
-            </div>
+            ))}
           </div>
 
           <button className="bg-green-400 px-4 py-2 rounded-full">Submit</button>

@@ -101,10 +101,8 @@ export default function Users() {
               <td className="w-1/5" onClick={() => handleRowPress(user.id)}>{user.lastname}</td>
               <td className="w-1/5" onClick={() => handleRowPress(user.id)}>{user.email}</td>
               <td className="w-1/5" onClick={() => handleRowPress(user.id)}>{
-                Object.entries(user.permissions).map(([key, value]) => (
-                  <>
-                    {value && <label key={key} className="m-2 py-2 px-3 bg-slate-400 text-white rounded-2xl">{key}</label >}
-                  </>
+                Object.entries(user.permissions).filter(([_, value]) => value === true).map(([key]) => (
+                    <label key={key} className="m-2 py-2 px-3 bg-slate-400 text-white rounded-2xl">{key}</label>
                 ))
               }</td>
               <td className="w-1/5 hover:cursor-default"><button className="bg-red-700 hover:bg-red-800 px-4 py-2 rounded-full text-white" onClick={() => handleDeleteUser(user.id)}>Delete</button></td>
