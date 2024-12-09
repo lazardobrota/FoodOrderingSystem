@@ -7,9 +7,6 @@ import com.usermanagment.backend.model.User;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 @NoArgsConstructor
 public class UserMapper {
@@ -20,7 +17,7 @@ public class UserMapper {
                 user.getName(),
                 user.getLastname(),
                 user.getEmail(),
-                Permission.toList(user.getPermissionsBitMask())
+                Permission.toMap(user.getPermissionsBitMask())
         );
     }
 
@@ -61,7 +58,7 @@ public class UserMapper {
                 user.getLastname(),
                 user.getEmail(),
                 user.getPassword(),
-                Permission.toList(user.getPermissionsBitMask())
+                Permission.toMap(user.getPermissionsBitMask())
         );
     }
 }

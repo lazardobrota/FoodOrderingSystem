@@ -4,7 +4,7 @@ export class UpdateUser {
   lastname: string = ""
   email: string = ""
   password: string = ""
-  permissions: string[] = []
+  permissions: Record<string, boolean> = {}
 
 }
 
@@ -13,7 +13,7 @@ export class User {
   name: string = ""
   lastname: string = ""
   email: string = ""
-  permissions: string[] = []
+  permissions: Record<string, boolean> = {}
 }
 
 export enum UserPermissions {

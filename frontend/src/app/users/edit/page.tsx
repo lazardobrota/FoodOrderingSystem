@@ -1,7 +1,7 @@
 "use client"
 
 import Header from "@/components/Header/Header";
-import { UpdateUser, User } from "@/types/user";
+import { UpdateUser, User, UserPermissions } from "@/types/user";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 

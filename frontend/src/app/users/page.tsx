@@ -68,6 +68,14 @@ export default function Users() {
     .then(() => restCallUsers(page, size))
   }
 
+  function writeList(list: string[]): string {
+    let result: string = '';
+    list.map((elem) => {
+      result = result.concat(elem).concat(" ")
+    })
+    return result;
+  }
+
   if (users.length === 0)
     return;
 
@@ -89,11 +97,17 @@ export default function Users() {
         <tbody>
           {users.map((user: User) => (
             <tr className="divide-x-4 hover:bg-slate-100 hover:cursor-pointer" key={user.id}>
-              <td onClick={() => handleRowPress(user.id)}>{user.name}</td>
-              <td onClick={() => handleRowPress(user.id)}>{user.lastname}</td>
-              <td onClick={() => handleRowPress(user.id)}>{user.email}</td>
-              <td onClick={() => handleRowPress(user.id)}>{user.permissions.length == 0 ? "None" : user.permissions}</td>
-              <td className="hover:cursor-default"><button className="bg-red-700 hover:bg-red-800 px-4 py-2 rounded-full text-white" onClick={() => handleDeleteUser(user.id)}>Delete</button></td>
+              <td className="w-1/5" onClick={() => handleRowPress(user.id)}>{user.name}</td>
+              <td className="w-1/5" onClick={() => handleRowPress(user.id)}>{user.lastname}</td>
+              <td className="w-1/5" onClick={() => handleRowPress(user.id)}>{user.email}</td>
+              <td className="w-1/5" onClick={() => handleRowPress(user.id)}>{
+                Object.entries(user.permissions).map(([key, value]) => (
+                  <>
+                    {value && <label key={key} className="m-2 py-2 px-3 bg-slate-400 text-white rounded-2xl">{key}</label >}
+                  </>
+                ))
+              }</td>
+              <td className="w-1/5 hover:cursor-default"><button className="bg-red-700 hover:bg-red-800 px-4 py-2 rounded-full text-white" onClick={() => handleDeleteUser(user.id)}>Delete</button></td>
             </tr>
           ))}
         </tbody>

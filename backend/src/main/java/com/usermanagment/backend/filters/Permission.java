@@ -2,8 +2,8 @@ package com.usermanagment.backend.filters;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 public enum Permission {
@@ -20,33 +20,26 @@ public enum Permission {
         this.value = value;
         this.name = name;
     }
-    public static int toInt(List<String> permissions) {
+    public static int toInt(Map<String, Boolean> permissionsMap) {
         int result = 0;
 
-        for (String permissionText: permissions) {
-            result += Permission.fromString(permissionText).getValue();
+        for (Permission permission: Permission.values()) {
+            if (permissionsMap.containsKey(permission.name) && permissionsMap.get(permission.name))
+                result += permission.value;
         }
 
         return result;
     }
 
-    public static List<String> toList(int permissions) {
-        List<String> result = new ArrayList<>();
+    public static Map<String, Boolean> toMap(int permissions) {
+        Map<String, Boolean> result = new HashMap<>();
         for (Permission permission: Permission.values()) {
             if ((permission.value & permissions) > 0)
-                result.add(permission.name);
-
+                result.put(permission.name, true);
+            else
+                result.put(permission.name, false);
         }
 
         return result;
-    }
-
-    private static Permission fromString(String permissionText) {
-        for (Permission permission: Permission.values()) {
-            if (permission.name.equals(permissionText))
-                return permission;
-        }
-
-        return Default;
     }
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -34,5 +35,5 @@ public class UserDto {
     private String email;
 
     @NotNull
-    private List<String> permissions;
+    private Map<String, Boolean> permissions;
 }

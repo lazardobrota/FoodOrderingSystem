@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -39,5 +40,5 @@ public class UserUpdateDto {
     private String password;
 
     @NotNull
-    private List<String> permissions;
+    private Map<String, Boolean> permissions;
 }
