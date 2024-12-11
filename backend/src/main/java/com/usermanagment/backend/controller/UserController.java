@@ -10,8 +10,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final IUserService userService;
 
-
     @GetMapping
+    @PreAuthorize("hasAuthority('can_delete_users')")
     public ResponseEntity<Page<UserDto>> getAllUsers(Pageable pageable) {
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(userService.getAllUsers(pageable)));
     }
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserTokenDto> login(UserLoginDto userLoginDto) {
+    public ResponseEntity<UserTokenDto> login(@RequestBody @Valid UserLoginDto userLoginDto) {
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(userService.login(userLoginDto)));
     }
 
@@ -41,8 +41,8 @@ public class UserController {
     }
 
     @GetMapping("/edit/{id}")
-    public ResponseEntity<UserUpdateDto> getUserByIdEdit(@PathVariable("id") Long id) {
-        return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(userService.getUserByIdEdit(id)));
+    public ResponseEntity<UserUpdateDto> getEditableUserById(@PathVariable("id") Long id) {
+        return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(userService.getEditableUserById(id)));
     }
 
     @PutMapping("/edit/{id}")

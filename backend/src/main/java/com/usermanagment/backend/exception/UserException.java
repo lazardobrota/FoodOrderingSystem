@@ -1,6 +1,5 @@
 package com.usermanagment.backend.exception;
 
-import lombok.Data;
 import lombok.Getter;
 import org.springframework.http.HttpStatusCode;
 

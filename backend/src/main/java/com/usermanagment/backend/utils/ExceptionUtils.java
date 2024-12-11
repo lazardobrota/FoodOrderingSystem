@@ -12,7 +12,7 @@ public class ExceptionUtils {
             return supplier.get();
         }
         catch (UserException exception) {
-            System.out.println(exception.getMessage() + " " + exception.getHttpStatus());
+            System.out.println(exception.getMessage() + " -- " + exception.getHttpStatus());
             return ResponseEntity.status(exception.getHttpStatus()).build();
         }
     }

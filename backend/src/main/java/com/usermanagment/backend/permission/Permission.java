@@ -1,8 +1,10 @@
-package com.usermanagment.backend.global;
+package com.usermanagment.backend.permission;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -37,6 +39,26 @@ public enum Permission {
                 result.put(permission.name, true);
             else
                 result.put(permission.name, false);
+        }
+
+        return result;
+    }
+
+    public static Map<String, Boolean> toMapOnlyGivenRoles(int permissions) {
+        Map<String, Boolean> result = new HashMap<>();
+        for (Permission permission: Permission.values()) {
+            if ((permission.value & permissions) > 0)
+                result.put(permission.name, true);
+        }
+
+        return result;
+    }
+
+    public static List<String> toListOnlyGivenRoles(int permissions) {
+        List<String> result = new ArrayList<>();
+        for (Permission permission: Permission.values()) {
+            if ((permission.value & permissions) > 0)
+                result.add(permission.name);
         }
 
         return result;

@@ -1,7 +1,6 @@
 package com.usermanagment.backend.config;
 
 import com.usermanagment.backend.security.filter.JwtAuthenticationFilter;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,12 +25,12 @@ public class SecurityConfig {
 
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/user/**")
-//                        .permitAll()
-//                        .anyRequest()
-//                        .authenticated()
-//                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

@@ -16,7 +16,7 @@ public class UserLoginDto {
 
     @NotBlank
     @NotNull
-    @Size(max = 50)
+    @Size(max = 30)
     private String email;
 
     @NotBlank

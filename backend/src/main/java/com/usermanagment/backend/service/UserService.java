@@ -5,7 +5,6 @@ import com.usermanagment.backend.dto.UserLoginDto;
 import com.usermanagment.backend.dto.UserTokenDto;
 import com.usermanagment.backend.dto.UserUpdateDto;
 import com.usermanagment.backend.exception.UserException;
-import com.usermanagment.backend.global.Global;
 import com.usermanagment.backend.mapper.UserMapper;
 import com.usermanagment.backend.model.User;
 import com.usermanagment.backend.repository.IUserRepo;
@@ -14,9 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +28,7 @@ public class UserService implements IUserService{
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Page<UserDto> getAllUsers(Pageable pageable) {
@@ -43,7 +43,7 @@ public class UserService implements IUserService{
 
     @Override
     public UserDto createUser(UserUpdateDto userUpdateDto) {
-        userUpdateDto.setPassword(Global.hashPassword(userUpdateDto.getPassword()));
+        userUpdateDto.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
         User user = userMapper.userUpdateDtoToUser(userUpdateDto);
 
         user = userRepo.save(user);
@@ -55,7 +55,7 @@ public class UserService implements IUserService{
         User user = userRepo.findByUserId(id).orElseThrow(() -> new UserException("User not found with given id", HttpStatus.BAD_REQUEST));
 
         if (!userUpdateDto.getPassword().equals(user.getPassword()))
-            userUpdateDto.setPassword(Global.hashPassword(userUpdateDto.getPassword()));
+            userUpdateDto.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
 
         user = userMapper.updateUser(user, userUpdateDto);
         userRepo.save(user);
@@ -71,6 +71,8 @@ public class UserService implements IUserService{
 
     @Override
     public UserTokenDto login(UserLoginDto userLoginDto) throws UserException {
+
+        System.out.println(userLoginDto.getEmail() + " " + userLoginDto.getPassword());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 userLoginDto.getEmail(),
                 userLoginDto.getPassword()
@@ -83,7 +85,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserUpdateDto getUserByIdEdit(Long id) {
+    public UserUpdateDto getEditableUserById(Long id) {
         User user = userRepo.findByUserId(id).orElseThrow(() -> new UserException("User not found with given id", HttpStatus.BAD_REQUEST));;
         return userMapper.userToUserUpdateDto(user);
     }

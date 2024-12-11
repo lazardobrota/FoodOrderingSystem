@@ -21,5 +21,5 @@ public interface IUserService {
 
     UserTokenDto login(UserLoginDto userLoginDto);
 
-    UserUpdateDto getUserByIdEdit(Long id);
+    UserUpdateDto getEditableUserById(Long id);
 }

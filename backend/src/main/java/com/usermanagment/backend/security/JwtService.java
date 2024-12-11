@@ -8,7 +8,6 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -20,8 +19,10 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtService {
 
-//    @Value("${user.secret.key}")
-    private static final String SECRET_KEY = "Moj_tajni_kljuc";
+    @Value("${user.secret.key}")
+    private String SECRET_KEY;
+
+
 
     public String extractUserEmail(String token) {
         return extractClaim(token, Claims::getSubject);
