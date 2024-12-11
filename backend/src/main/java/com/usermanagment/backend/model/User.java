@@ -1,12 +1,19 @@
 package com.usermanagment.backend.model;
 
+import com.usermanagment.backend.global.Permission;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,4 +31,20 @@ public class User {
 
     @Column(nullable = false, name = "permissions_bit_mask")
     private int permissionsBitMask;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Permission.toMap(permissionsBitMask).keySet().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
 }

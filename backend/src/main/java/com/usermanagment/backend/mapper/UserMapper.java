@@ -2,7 +2,7 @@ package com.usermanagment.backend.mapper;
 
 import com.usermanagment.backend.dto.UserDto;
 import com.usermanagment.backend.dto.UserUpdateDto;
-import com.usermanagment.backend.filters.Permission;
+import com.usermanagment.backend.global.Permission;
 import com.usermanagment.backend.model.User;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;

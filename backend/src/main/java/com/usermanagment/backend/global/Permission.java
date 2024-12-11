@@ -1,4 +1,4 @@
-package com.usermanagment.backend.filters;
+package com.usermanagment.backend.global;
 
 import lombok.Getter;
 
