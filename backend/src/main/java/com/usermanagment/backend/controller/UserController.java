@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -20,7 +19,6 @@ public class UserController {
     private final IUserService userService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('can_delete_users')")
     public ResponseEntity<Page<UserDto>> getAllUsers(Pageable pageable) {
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(userService.getAllUsers(pageable)));
     }

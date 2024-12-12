@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -43,9 +45,13 @@ public class UserService implements IUserService{
 
     @Override
     public UserDto createUser(UserUpdateDto userUpdateDto) {
-        userUpdateDto.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
-        User user = userMapper.userUpdateDtoToUser(userUpdateDto);
+        Optional<User> optionalUser = userRepo.findByEmail(userUpdateDto.getEmail());
+        if (optionalUser.isPresent())
+            throw new UserException("There is already user with that email", HttpStatus.BAD_REQUEST);
 
+        userUpdateDto.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
+
+        User user = userMapper.userUpdateDtoToUser(userUpdateDto);
         user = userRepo.save(user);
         return userMapper.userToUserDto(user);
     }

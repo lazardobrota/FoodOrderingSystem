@@ -1,5 +1,6 @@
 package com.usermanagment.backend.config;
 
+import com.usermanagment.backend.model.User;
 import com.usermanagment.backend.repository.IUserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,11 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepo.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> {
+
+            User user = userRepo.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            return user;
+        };
     }
 
     @Bean
