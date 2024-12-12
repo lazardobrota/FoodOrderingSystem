@@ -1,6 +1,7 @@
 "use client"
 
 import Header from "@/components/Header/Header";
+import { usePermissionCheck } from "@/hooks/credentials";
 import { UpdateUser, User, UserPermissions } from "@/types/user";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -11,6 +12,8 @@ export default function UserEdit() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const id = searchParams.get("id")
+
+  usePermissionCheck(UserPermissions.CanUpdateUsers)
 
   useEffect(() => {
     fetch(`http://localhost:8090/user/edit/${id}`, {

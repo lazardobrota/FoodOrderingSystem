@@ -1,7 +1,8 @@
 "use client"
 
 import Header from "@/components/Header/Header"
-import { User } from "@/types/user"
+import { usePermissionCheck } from "@/hooks/credentials"
+import { User, UserPermissions } from "@/types/user"
 import { useRouter } from "next/navigation"
 import { MouseEvent, useEffect, useState } from "react"
 
@@ -13,6 +14,8 @@ export default function Users() {
 
   const size: number = 5;
   const router = useRouter();
+
+  usePermissionCheck(UserPermissions.CanReadUsers)
 
   useEffect(() => {
     restCallUsers(page, size);
