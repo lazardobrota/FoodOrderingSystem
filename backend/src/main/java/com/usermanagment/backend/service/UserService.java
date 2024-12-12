@@ -58,6 +58,9 @@ public class UserService implements IUserService{
 
     @Override
     public UserDto updateUser(Long id, UserUpdateDto userUpdateDto) throws UserException {
+        Optional<User> optionalUser = userRepo.findByEmail(userUpdateDto.getEmail());
+        if (optionalUser.isPresent() && !optionalUser.get().getId().equals(id))
+            throw new UserException("There is already user with that email", HttpStatus.BAD_REQUEST);
         User user = userRepo.findByUserId(id).orElseThrow(() -> new UserException("User not found with given id", HttpStatus.BAD_REQUEST));
 
         if (!userUpdateDto.getPassword().equals(user.getPassword()))
