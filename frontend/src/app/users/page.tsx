@@ -71,6 +71,10 @@ export default function Users() {
     .then(() => restCallUsers(page, size))
   }
 
+  function isAllowed(permission: string): boolean {
+    return localStorage.getItem(permission) !== null && localStorage.getItem(permission) === 'true'
+  }
+
   function writeList(list: string[]): string {
     let result: string = '';
     list.map((elem) => {

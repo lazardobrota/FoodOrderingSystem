@@ -1,6 +1,7 @@
 "use client"
 
 import Header from "@/components/Header/Header";
+import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
 import { UpdateUser, User, UserPermissions } from "@/types/user";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -22,10 +23,11 @@ export default function UserEdit() {
         'Authorization': 'Bearer ' + window.localStorage.getItem('jwt')
       }
     })
-      .then(res => res.json())
+      .then(res => checkStatusCode(res, "This user doesn't exist"))
       .then(data => {
         setUser(data)
       })
+      .catch(err => console.log(err))
   }, [])
 
   function handleSubmit(e: FormEvent<HTMLFormElement>): void {
@@ -45,12 +47,12 @@ export default function UserEdit() {
         permissions: user.permissions
       })
     })
-      .then(res => res.json())
+      .then(res =>checkStatusCode(res, "This email is already taken"))
       .then(data => {
         console.log(data)
         router.push("/users")
       })
-      .catch((error) => console.log("this email already exists"))
+      .catch((error) => console.log(error))
   }
 
   function hanleCheckBoxChange(key: string, value: boolean): void {

@@ -1,6 +1,7 @@
 "use client"
 
 import Header from "@/components/Header/Header";
+import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
 import { UpdateUser, UserPermissions } from "@/types/user";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -34,12 +35,12 @@ export default function UserNew() {
         permissions: user.permissions
       })
     })
-    .then(res => res.json())
+    .then(res => checkStatusCode(res, "Email already taken"))
     .then(data => {
       console.log(data)
       router.push("/users")
     })
-    .catch((error) => console.log("this email already exists"))
+    .catch((error) => console.log(error))
   }
 
   function hanleCheckBoxChange(key: string, value: boolean): void {
