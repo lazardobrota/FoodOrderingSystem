@@ -2,12 +2,15 @@
 
 import Header from "@/components/Header/Header";
 import { checkStatusCode } from "@/errors/statusCode";
+import { SnackBackClass } from "@/types/snackbar";
 import { UserLogin, UserPermissions } from "@/types/user";
+import { Snackbar } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export default function Login() {
 
+  const [snackBar, setSnackBar] = useState<SnackBackClass>(new SnackBackClass())
   const [userLogin, setUserLogin] = useState<UserLogin>(new UserLogin)
 
   const router = useRouter()
@@ -37,9 +40,11 @@ export default function Login() {
 
         router.push("/home")
       })
-      .catch(err => {
-        window.alert(err)
-      })
+      .catch(error => setSnackBar({...snackBar, open: true, message: error.message}))
+  }
+
+  function handleClose(): void {
+    setSnackBar({ ...snackBar, open: false });
   }
 
   return (
@@ -57,6 +62,8 @@ export default function Login() {
 
         <button className="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-full">Submit</button>
       </form>
+
+      <Snackbar anchorOrigin={{vertical: snackBar.vertical, horizontal: snackBar.horizontal}} open={snackBar.open} onClose={() => handleClose()} message={snackBar.message}/>
     </div>
   )
 }

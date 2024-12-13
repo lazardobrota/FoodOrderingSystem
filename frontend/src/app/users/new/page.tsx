@@ -3,7 +3,9 @@
 import Header from "@/components/Header/Header";
 import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
+import { SnackBackClass } from "@/types/snackbar";
 import { UpdateUser, UserPermissions } from "@/types/user";
+import { Snackbar } from "@mui/material";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { permission } from "process";
@@ -11,6 +13,7 @@ import { FormEvent, useState } from "react";
 
 export default function UserNew() {
 
+  const [snackBar, setSnackBar] = useState<SnackBackClass>(new SnackBackClass())
   const [user, setUser] = useState<UpdateUser>(new UpdateUser())
   const router: AppRouterInstance = useRouter();
 
@@ -40,7 +43,11 @@ export default function UserNew() {
       console.log(data)
       router.push("/users")
     })
-    .catch((error) => console.log(error))
+    .catch((error) => setSnackBar({...snackBar, open: true, message: error.message}))
+  }
+
+  function handleClose(): void {
+    setSnackBar({ ...snackBar, open: false });
   }
 
   function hanleCheckBoxChange(key: string, value: boolean): void {
@@ -91,6 +98,7 @@ export default function UserNew() {
           <button className="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-full">Submit</button>
         </form>
       </div>
+      <Snackbar anchorOrigin={{vertical: snackBar.vertical, horizontal: snackBar.horizontal}} open={snackBar.open} onClose={() => handleClose()} message={snackBar.message}/>
     </div>
   )
 }

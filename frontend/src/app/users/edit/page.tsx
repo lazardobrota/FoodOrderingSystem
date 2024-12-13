@@ -3,12 +3,15 @@
 import Header from "@/components/Header/Header";
 import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
+import { SnackBackClass } from "@/types/snackbar";
 import { UpdateUser, User, UserPermissions } from "@/types/user";
+import { Snackbar } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function UserEdit() {
 
+  const [snackBar, setSnackBar] = useState<SnackBackClass>(new SnackBackClass())
   const [user, setUser] = useState<UpdateUser>(new UpdateUser())
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -27,7 +30,7 @@ export default function UserEdit() {
       .then(data => {
         setUser(data)
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err.message))
   }, [])
 
   function handleSubmit(e: FormEvent<HTMLFormElement>): void {
@@ -52,7 +55,9 @@ export default function UserEdit() {
         console.log(data)
         router.push("/users")
       })
-      .catch((error) => console.log(error))
+      .catch((error) => {
+        setSnackBar({...snackBar, open: true, message: error.message})
+      })
   }
 
   function hanleCheckBoxChange(key: string, value: boolean): void {
@@ -63,6 +68,10 @@ export default function UserEdit() {
         [key]: !value
       }
     }))
+  }
+
+  function handleClose(): void {
+    setSnackBar({ ...snackBar, open: false });
   }
 
   if (user === undefined)
@@ -106,6 +115,7 @@ export default function UserEdit() {
           <button className="bg-green-400 px-4 py-2 rounded-full">Submit</button>
         </form>
       </div>
+      <Snackbar anchorOrigin={{vertical: snackBar.vertical, horizontal: snackBar.horizontal}} open={snackBar.open} onClose={() => handleClose()} message={snackBar.message}/>
     </div>
   )
 }
