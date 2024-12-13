@@ -1,12 +1,13 @@
 "use client"
 
 import Header from "@/components/Header/Header";
+import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
 import { SnackBackClass } from "@/types/snackbar";
 import { UserLogin, UserPermissions } from "@/types/user";
-import { Snackbar } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { toast } from "sonner";
 
 export default function Login() {
 
@@ -40,11 +41,7 @@ export default function Login() {
 
         router.push("/home")
       })
-      .catch(error => setSnackBar({...snackBar, open: true, message: error.message}))
-  }
-
-  function handleClose(): void {
-    setSnackBar({ ...snackBar, open: false });
+      .catch(error => toast.error(error.message))
   }
 
   return (
@@ -62,8 +59,7 @@ export default function Login() {
 
         <button className="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-full">Submit</button>
       </form>
-
-      <Snackbar anchorOrigin={{vertical: snackBar.vertical, horizontal: snackBar.horizontal}} open={snackBar.open} onClose={() => handleClose()} message={snackBar.message}/>
+      <Toaster richColors/>
     </div>
   )
 }

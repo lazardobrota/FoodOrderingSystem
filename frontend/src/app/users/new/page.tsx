@@ -1,11 +1,11 @@
 "use client"
 
 import Header from "@/components/Header/Header";
+import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
 import { SnackBackClass } from "@/types/snackbar";
 import { UpdateUser, UserPermissions } from "@/types/user";
-import { Snackbar } from "@mui/material";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { permission } from "process";
@@ -46,9 +46,6 @@ export default function UserNew() {
     .catch((error) => setSnackBar({...snackBar, open: true, message: error.message}))
   }
 
-  function handleClose(): void {
-    setSnackBar({ ...snackBar, open: false });
-  }
 
   function hanleCheckBoxChange(key: string, value: boolean): void {
     setUser((prevUser) => ({
@@ -98,7 +95,8 @@ export default function UserNew() {
           <button className="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-full">Submit</button>
         </form>
       </div>
-      <Snackbar anchorOrigin={{vertical: snackBar.vertical, horizontal: snackBar.horizontal}} open={snackBar.open} onClose={() => handleClose()} message={snackBar.message}/>
+
+      <Toaster richColors/>
     </div>
   )
 }

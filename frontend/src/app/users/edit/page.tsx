@@ -1,13 +1,14 @@
 "use client"
 
 import Header from "@/components/Header/Header";
+import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
 import { SnackBackClass } from "@/types/snackbar";
 import { UpdateUser, User, UserPermissions } from "@/types/user";
-import { Snackbar } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function UserEdit() {
 
@@ -55,9 +56,7 @@ export default function UserEdit() {
         console.log(data)
         router.push("/users")
       })
-      .catch((error) => {
-        setSnackBar({...snackBar, open: true, message: error.message})
-      })
+      .catch((error) => toast.error(error.message))
   }
 
   function hanleCheckBoxChange(key: string, value: boolean): void {
@@ -68,10 +67,6 @@ export default function UserEdit() {
         [key]: !value
       }
     }))
-  }
-
-  function handleClose(): void {
-    setSnackBar({ ...snackBar, open: false });
   }
 
   if (user === undefined)
@@ -115,7 +110,8 @@ export default function UserEdit() {
           <button className="bg-green-400 px-4 py-2 rounded-full">Submit</button>
         </form>
       </div>
-      <Snackbar anchorOrigin={{vertical: snackBar.vertical, horizontal: snackBar.horizontal}} open={snackBar.open} onClose={() => handleClose()} message={snackBar.message}/>
+
+      <Toaster richColors/>
     </div>
   )
 }
