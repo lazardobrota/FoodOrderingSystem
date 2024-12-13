@@ -25,15 +25,15 @@ export default function Header() {
   }
 
   return (
-    <div className="flex flex-row justify-between px-6 py-8 align-middle">
+    <div className="flex flex-row justify-between px-6 py-8 align-middle border-b-2">
       <div>
-        <button onClick={() => router.push("/home")} className="text-2xl">User Managment</button>
+        <button onClick={() => router.push("/home")} className="text-2xl px-6 py-4">User Managment</button>
       </div>
       <div className="flex flex-row justify-between gap-9 text-xl">
-        {!doesExist("jwt")                         && <button onClick={() => router.push("/login")}>Login</button>}
-        {isAllowed(UserPermissions.CanReadUsers)   && <button onClick={() => router.push("/users")}>Users</button>}
-        {isAllowed(UserPermissions.CanCreateUsers) && <button onClick={() => router.push("/users/new")}>New User</button>}
-        {doesExist("jwt")                          && <button onClick={() => handleLogout()}>Logout</button>}
+        {!doesExist("jwt")                         && <button className="hover:bg-slate-100 px-6 py-4 rounded-xl transition-all duration-200" onClick={() => router.push("/login")}>Login</button>}
+        {isAllowed(UserPermissions.CanReadUsers)   && <button className="hover:bg-slate-100 px-6 py-4 rounded-xl transition-all duration-200" onClick={() => router.push("/users")}>Users</button>}
+        {isAllowed(UserPermissions.CanCreateUsers) && <button className="hover:bg-slate-100 px-6 py-4 rounded-xl transition-all duration-200" onClick={() => router.push("/users/new")}>New User</button>}
+        {doesExist("jwt")                          && <button className="hover:bg-slate-100 px-6 py-4 rounded-xl transition-all duration-200" onClick={() => handleLogout()}>Logout</button>}
       </div>
     </div>
   )
