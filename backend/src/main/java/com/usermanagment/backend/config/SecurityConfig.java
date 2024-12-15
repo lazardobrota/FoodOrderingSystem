@@ -28,13 +28,13 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/**")
-//                        .permitAll()
-//                        .anyRequest()
-//                        .authenticated()
-//                )
-                .authorizeHttpRequests(RequestPermission::authorization)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+//                .authorizeHttpRequests(RequestPermission::authorization)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
