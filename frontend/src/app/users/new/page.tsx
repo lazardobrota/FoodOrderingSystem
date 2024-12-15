@@ -4,16 +4,13 @@ import Header from "@/components/Header/Header";
 import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
-import { SnackBackClass } from "@/types/snackbar";
 import { UpdateUser, UserPermissions } from "@/types/user";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { permission } from "process";
 import { FormEvent, useState } from "react";
+import { toast } from "sonner";
 
 export default function UserNew() {
-
-  const [snackBar, setSnackBar] = useState<SnackBackClass>(new SnackBackClass())
   const [user, setUser] = useState<UpdateUser>(new UpdateUser())
   const router: AppRouterInstance = useRouter();
 
@@ -21,8 +18,6 @@ export default function UserNew() {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>, user: UpdateUser): void {
     e.preventDefault();
-
-    console.log(user)
 
     fetch('http://localhost:8090/user/create', {
       method: 'POST',
@@ -43,7 +38,7 @@ export default function UserNew() {
       console.log(data)
       router.push("/users")
     })
-    .catch((error) => setSnackBar({...snackBar, open: true, message: error.message}))
+    .catch((error) => toast.error(error.message))
   }
 
 

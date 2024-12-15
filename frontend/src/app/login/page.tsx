@@ -3,7 +3,6 @@
 import Header from "@/components/Header/Header";
 import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
-import { SnackBackClass } from "@/types/snackbar";
 import { UserLogin, UserPermissions } from "@/types/user";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -11,7 +10,6 @@ import { toast } from "sonner";
 
 export default function Login() {
 
-  const [snackBar, setSnackBar] = useState<SnackBackClass>(new SnackBackClass())
   const [userLogin, setUserLogin] = useState<UserLogin>(new UserLogin)
 
   const router = useRouter()

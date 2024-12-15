@@ -7,17 +7,17 @@ export default function Header() {
   const router = useRouter();
   
   function handleLogout(): void {
-    localStorage.removeItem("jwt")
-    localStorage.removeItem(UserPermissions.CanCreateUsers)
-    localStorage.removeItem(UserPermissions.CanDeleteUsers)
-    localStorage.removeItem(UserPermissions.CanReadUsers)
-    localStorage.removeItem(UserPermissions.CanUpdateUsers)
+    window.localStorage.removeItem("jwt")
+    window.localStorage.removeItem(UserPermissions.CanCreateUsers)
+    window.localStorage.removeItem(UserPermissions.CanDeleteUsers)
+    window.localStorage.removeItem(UserPermissions.CanReadUsers)
+    window.localStorage.removeItem(UserPermissions.CanUpdateUsers)
   
     router.push("/login")
   }
 
   function doesExist(name: string): boolean {
-    return localStorage.getItem(name) !== null
+    return window.localStorage.getItem(name) !== null
   }
 
   function isAllowed(permission: string): boolean {

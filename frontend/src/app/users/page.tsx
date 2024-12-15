@@ -92,11 +92,12 @@ export default function Users() {
             <TableHead>Lastname</TableHead>
             <TableHead>Email</TableHead>
             <TableHead className="w-1/2">Permissions</TableHead>
+            {isAllowed(UserPermissions.CanDeleteUsers) && <TableHead >Delete</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
           {users.map((user: User) => (
-            <TableRow key={user.id} className="hover:bg-slate-100 hover:cursor-pointer">
+            <TableRow key={user.id} className="hover:cursor-pointer">
               <TableCell className="p-4" onClick={() => handleRowPress(user.id)}>{user.name}</TableCell>
               <TableCell className="p-4" onClick={() => handleRowPress(user.id)}>{user.lastname}</TableCell>
               <TableCell className="p-4" onClick={() => handleRowPress(user.id)}>{user.email}</TableCell>

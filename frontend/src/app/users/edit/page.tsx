@@ -4,7 +4,6 @@ import Header from "@/components/Header/Header";
 import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
-import { SnackBackClass } from "@/types/snackbar";
 import { UpdateUser, User, UserPermissions } from "@/types/user";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -12,7 +11,6 @@ import { toast } from "sonner";
 
 export default function UserEdit() {
 
-  const [snackBar, setSnackBar] = useState<SnackBackClass>(new SnackBackClass())
   const [user, setUser] = useState<UpdateUser>(new UpdateUser())
   const router = useRouter()
   const searchParams = useSearchParams()
