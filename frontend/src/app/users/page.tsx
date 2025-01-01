@@ -23,7 +23,7 @@ export default function Users() {
   }, [])
 
   function restCallUsers(page: number, size: number): void {
-    fetch(`http://localhost:8090/user?page=${page}&size=${size}`, {
+    fetch(`http://localhost:8090/user/all?page=${page}&size=${size}`, {
       method: "GET",
       headers: {
         'Authorization': 'Bearer ' + window.localStorage.getItem('jwt')
