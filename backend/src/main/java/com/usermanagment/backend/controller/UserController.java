@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final IUserService userService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Page<UserDto>> getAllUsers(Pageable pageable) {
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(userService.getAllUsers(pageable)));
     }

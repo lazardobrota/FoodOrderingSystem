@@ -6,8 +6,9 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
 
 public class RequestPermission {
     public static void authorization(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizeHttp) {
+        authorizeHttp.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
         authorizeHttp.requestMatchers(HttpMethod.POST, "/login").permitAll();
-        authorizeHttp.requestMatchers(HttpMethod.GET).hasAuthority(Permission.CanReadUsers.getName());
+        authorizeHttp.requestMatchers(HttpMethod.GET, "/all").hasAuthority(Permission.CanReadUsers.getName());
         authorizeHttp.requestMatchers(HttpMethod.GET, "/{id}").hasAuthority(Permission.CanReadUsers.getName());
         authorizeHttp.requestMatchers(HttpMethod.POST, "/create").hasAuthority(Permission.CanCreateUsers.getName());
         authorizeHttp.requestMatchers(HttpMethod.GET, "/edit/{id}").hasAuthority(Permission.CanUpdateUsers.getName());
