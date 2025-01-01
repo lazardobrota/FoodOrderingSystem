@@ -4,8 +4,7 @@
 #### <ins>Backend setup:</ins>
 <p>
 
-  1. Navigate to your project's main source directory: `backend/src/main`
-  2. Create a new folder named `resources` inside `backend/src/main` directory. The folder structure should now look like this: `backend/src/main/resources`
+  1. Navigate to your project's main source directory: `backend/src/main/resources`
   3. Inside the `resources` folder, create a new file named `application.properties`(File is case-sensitive).
 </p>
 <p>
@@ -14,7 +13,7 @@
 </p>
 <p>
   
-  Inside `application.properties` you can add ket-value pairs to configure your application, copy template below and change values to the right of equals sign
+  Inside `application.properties` you can add key-value pairs to configure your application, copy template below and change values to the right of equals sign that are in CAPITAL LETTERS
 </p>
 
 
