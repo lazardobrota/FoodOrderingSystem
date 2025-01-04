@@ -17,7 +17,10 @@ public class SeedDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        seedUsers();
+    }
 
+    private void seedUsers() {
         if (userRepo.count() != 0)
             return;
 

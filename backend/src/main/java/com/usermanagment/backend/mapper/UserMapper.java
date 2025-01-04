@@ -2,7 +2,7 @@ package com.usermanagment.backend.mapper;
 
 import com.usermanagment.backend.dto.UserDto;
 import com.usermanagment.backend.dto.UserUpdateDto;
-import com.usermanagment.backend.permission.Permission;
+import com.usermanagment.backend.permission.UserPermission;
 import com.usermanagment.backend.model.User;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class UserMapper {
                 user.getName(),
                 user.getLastname(),
                 user.getEmail(),
-                Permission.toMap(user.getPermissionsBitMask())
+                UserPermission.toMap(user.getPermissionsBitMask())
         );
     }
 
@@ -27,7 +27,7 @@ public class UserMapper {
         user.setName(userDto.getName());
         user.setLastname(userDto.getLastname());
         user.setEmail(userDto.getEmail());
-        user.setPermissionsBitMask(Permission.toInt(userDto.getPermissions()));
+        user.setPermissionsBitMask(UserPermission.toInt(userDto.getPermissions()));
         return user;
     }
 
@@ -38,7 +38,7 @@ public class UserMapper {
         user.setLastname(userUpdateDto.getLastname());
         user.setEmail(userUpdateDto.getEmail());
         user.setPassword(userUpdateDto.getPassword());
-        user.setPermissionsBitMask(Permission.toInt(userUpdateDto.getPermissions()));
+        user.setPermissionsBitMask(UserPermission.toInt(userUpdateDto.getPermissions()));
         return user;
     }
 
@@ -47,7 +47,7 @@ public class UserMapper {
         user.setLastname(userUpdateDto.getLastname());
         user.setEmail(userUpdateDto.getEmail());
         user.setPassword(userUpdateDto.getPassword());
-        user.setPermissionsBitMask(Permission.toInt(userUpdateDto.getPermissions()));
+        user.setPermissionsBitMask(UserPermission.toInt(userUpdateDto.getPermissions()));
         return user;
     }
 
@@ -58,7 +58,7 @@ public class UserMapper {
                 user.getLastname(),
                 user.getEmail(),
                 user.getPassword(),
-                Permission.toMap(user.getPermissionsBitMask())
+                UserPermission.toMap(user.getPermissionsBitMask())
         );
     }
 }

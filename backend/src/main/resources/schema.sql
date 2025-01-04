@@ -9,19 +9,37 @@ create table food_ordering_system.user
     primary key (id)
 );
 
-create table dish
+create table food_ordering_system.ingredient
+(
+    id   bigint       not null auto_increment primary key,
+    name varchar(255) not null unique
+);
+
+create table food_ordering_system.dish
 (
     id   bigint       not null auto_increment,
     name varchar(255) not null unique,
     primary key (id)
 );
 
+create table food_ordering_system.dish_ingredient
+(
+    id            bigint not null auto_increment primary key,
+    ingredient_id bigint not null,
+    dish_id       bigint not null,
+    constraint ingredient__fk
+        foreign key (ingredient_id) references ingredient (id) on delete cascade,
+    constraint dish__fk2
+        foreign key (dish_id) references dish (id) on delete cascade
+);
+
 create table food_ordering_system.`order`
 (
-    id        bigint  not null auto_increment primary key,
-    status    int     not null,
-    createdBy bigint  not null,
-    active    bool not null,
+    id          bigint  not null auto_increment primary key,
+    status      int     not null,
+    createdBy   bigint  not null,
+    createdDate datetime not null,
+    active      bool not null,
     constraint user___fk
         foreign key (createdBy) references user (id) on delete cascade
 );
@@ -37,14 +55,26 @@ create table food_ordering_system.order_dish
         foreign key (dish_id) references dish (id) on delete cascade
 );
 
+#TODO Change params
+create table food_ordering_system.error_message
+(
+    id          bigint       not null auto_increment primary key,
+    user_id     bigint       not null,
+    description varchar(255) not null,
+    constraint user_error__fk
+        foreign key (user_id) references user (id) on delete cascade
+);
+
 #Empty Table
 delete from food_ordering_system.user;
 delete from food_ordering_system.dish;
 delete from food_ordering_system.order;
 delete from food_ordering_system.order_dish;
+delete from food_ordering_system.error_message;
 
 #Delete Table
 drop table food_ordering_system.user;
 drop table food_ordering_system.dish;
 drop table food_ordering_system.order;
 drop table food_ordering_system.order_dish;
+drop table food_ordering_system.error_message;

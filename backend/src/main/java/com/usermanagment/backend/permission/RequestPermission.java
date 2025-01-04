@@ -6,13 +6,13 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
 
 public class RequestPermission {
     public static void authorization(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizeHttp) {
-        authorizeHttp.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-        authorizeHttp.requestMatchers(HttpMethod.POST, "/login").permitAll();
-        authorizeHttp.requestMatchers(HttpMethod.GET, "/all").hasAuthority(Permission.CanReadUsers.getName());
-        authorizeHttp.requestMatchers(HttpMethod.GET, "/{id}").hasAuthority(Permission.CanReadUsers.getName());
-        authorizeHttp.requestMatchers(HttpMethod.POST, "/create").hasAuthority(Permission.CanCreateUsers.getName());
-        authorizeHttp.requestMatchers(HttpMethod.GET, "/edit/{id}").hasAuthority(Permission.CanUpdateUsers.getName());
-        authorizeHttp.requestMatchers(HttpMethod.PUT, "/edit/{id}").hasAuthority(Permission.CanUpdateUsers.getName());
-        authorizeHttp.requestMatchers(HttpMethod.DELETE, "/{id}").hasAuthority(Permission.CanDeleteUsers.getName());
+        authorizeHttp.requestMatchers(HttpMethod.OPTIONS, "/user/**").permitAll();
+        authorizeHttp.requestMatchers(HttpMethod.POST, "/user/login").permitAll();
+        authorizeHttp.requestMatchers(HttpMethod.GET, "/user/all").hasAuthority(UserPermission.CanReadUsers.getName());
+        authorizeHttp.requestMatchers(HttpMethod.GET, "/user/{id}").hasAuthority(UserPermission.CanReadUsers.getName());
+        authorizeHttp.requestMatchers(HttpMethod.POST, "/user/create").hasAuthority(UserPermission.CanCreateUsers.getName());
+        authorizeHttp.requestMatchers(HttpMethod.GET, "/user/edit/{id}").hasAuthority(UserPermission.CanUpdateUsers.getName());
+        authorizeHttp.requestMatchers(HttpMethod.PUT, "/user/edit/{id}").hasAuthority(UserPermission.CanUpdateUsers.getName());
+        authorizeHttp.requestMatchers(HttpMethod.DELETE, "/user/{id}").hasAuthority(UserPermission.CanDeleteUsers.getName());
     }
 }
