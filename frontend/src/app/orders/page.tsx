@@ -1,14 +1,17 @@
 "use client"
 
-import Header from "@/components/Header/Header"
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { usePermissionCheck } from "@/hooks/credentials"
-import { User, UserPermissions } from "@/types/user"
-import { useRouter } from "next/navigation"
-import { MouseEvent, useEffect, useState } from "react"
+import Header from "@/components/Header/Header";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { usePermissionCheck } from "@/hooks/credentials";
+import { User, UserPermissions } from "@/types/user";
+import { useRouter } from "next/navigation";
+import { useState, useEffect, MouseEvent } from "react";
 
-export default function Users() {
-
+export default function Orders() {
   const [users, setUser] = useState<User[]>([])
   const [page, setPage] = useState<number>(0);
   const [last, setLast] = useState<boolean>(false);
@@ -84,8 +87,53 @@ export default function Users() {
     <div className="flex flex-col gap-14">
       <Header></Header>
 
-      <div className="px-32">
+      <div className="px-32 flex flex-col gap-4">
+
         <div>
+          <Button>Create Order</Button>
+        </div>
+
+        <div className="flex flex-col gap-6">
+          {/* TODO Make this grid */}
+          <div className="flex flex-col gap-4">
+            {/* TODO Make this grid */}
+            <div className="flex flex-row place-items-center gap-5 max-w-80">
+              <Label>User Id:</Label>
+              <Input />
+            </div>
+            <div className="flex flex-row place-items-center gap-5 max-w-80">
+              <Label>Date from:</Label>
+              <Input />
+            </div>
+            <div className="flex flex-row place-items-center gap-5 max-w-80">
+              <Label>Date to:</Label>
+              <Input />
+            </div>
+            <div className="flex flex-row place-items-center gap-5 max-w-80">
+              <Checkbox id="ordered" />
+              <Label htmlFor="ordered">Ordered</Label>
+            </div>
+            <div className="flex flex-row place-items-center gap-5 max-w-80">
+              <Checkbox id="preparing" />
+              <Label htmlFor="preparing">Preparing</Label>
+            </div>
+            <div className="flex flex-row place-items-center gap-5 max-w-80">
+              <Checkbox id="in_delivery" />
+              <Label htmlFor="in_delivery">In Delivery</Label>
+            </div>
+            <div className="flex flex-row place-items-center gap-5 max-w-80">
+              <Checkbox id="delivered" />
+              <Label htmlFor="delivered">Delivered</Label>
+            </div>
+            <div className="flex flex-row place-items-center gap-5 max-w-80">
+              <Checkbox id="canceled" />
+              <Label htmlFor="canceled">Canceled</Label>
+            </div>
+          </div>
+          <div>
+            <Button>Search</Button>
+          </div>
+
           <Table>
             <TableCaption>Users</TableCaption>
             <TableHeader className="p-10">
@@ -108,7 +156,7 @@ export default function Users() {
                       <label key={key} className="m-2 py-2 px-3 bg-slate-400 text-white rounded-2xl hover:cursor-pointer">{key}</label>
                     ))
                   }</TableCell>
-                  {isAllowed(UserPermissions.CanDeleteUsers) && <TableCell><button className="bg-red-700 hover:bg-red-800 px-4 py-2 rounded-full text-white" onClick={() => handleDeleteUser(user.id)}>Delete</button></TableCell>}
+                  {isAllowed(UserPermissions.CanDeleteUsers) && <TableCell><button className="bg-red-700 hover:bg-red-800 px-4 py-2 rounded-full text-white" onClick={() => handleDeleteUser(user.id)}>Cancel</button></TableCell>}
                 </TableRow>
               ))}
             </TableBody>
