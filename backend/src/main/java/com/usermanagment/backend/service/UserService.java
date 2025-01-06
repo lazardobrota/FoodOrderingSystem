@@ -1,9 +1,9 @@
 package com.usermanagment.backend.service;
 
-import com.usermanagment.backend.dto.UserDto;
-import com.usermanagment.backend.dto.UserLoginDto;
-import com.usermanagment.backend.dto.UserTokenDto;
-import com.usermanagment.backend.dto.UserUpdateDto;
+import com.usermanagment.backend.dto.user.UserDto;
+import com.usermanagment.backend.dto.user.UserLoginDto;
+import com.usermanagment.backend.dto.user.UserTokenDto;
+import com.usermanagment.backend.dto.user.UserUpdateDto;
 import com.usermanagment.backend.exception.UserException;
 import com.usermanagment.backend.mapper.UserMapper;
 import com.usermanagment.backend.model.User;

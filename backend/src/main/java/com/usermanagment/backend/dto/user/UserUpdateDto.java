@@ -1,4 +1,4 @@
-package com.usermanagment.backend.dto;
+package com.usermanagment.backend.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

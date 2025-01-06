@@ -1,4 +1,4 @@
-package com.usermanagment.backend.dto;
+package com.usermanagment.backend.dto.ingredient;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserTokenDto {
+public class IngredientDto {
 
-    private UserDto user;
+    private int id;
 
-    private String token;
+    private String name;
 }

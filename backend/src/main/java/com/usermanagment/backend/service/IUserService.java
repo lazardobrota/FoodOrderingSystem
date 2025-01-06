@@ -1,9 +1,9 @@
 package com.usermanagment.backend.service;
 
-import com.usermanagment.backend.dto.UserDto;
-import com.usermanagment.backend.dto.UserLoginDto;
-import com.usermanagment.backend.dto.UserTokenDto;
-import com.usermanagment.backend.dto.UserUpdateDto;
+import com.usermanagment.backend.dto.user.UserDto;
+import com.usermanagment.backend.dto.user.UserLoginDto;
+import com.usermanagment.backend.dto.user.UserTokenDto;
+import com.usermanagment.backend.dto.user.UserUpdateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

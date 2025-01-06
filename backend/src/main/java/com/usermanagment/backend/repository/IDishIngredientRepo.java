@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IDishIngredient extends JpaRepository<DishIngredient, Long>, JpaSpecificationExecutor<DishIngredient> {
+public interface IDishIngredientRepo extends JpaRepository<DishIngredient, Long>, JpaSpecificationExecutor<DishIngredient> {
     Optional<DishIngredient> findById(long id);
 
     @Query("select di from DishIngredient di where di.dish.id = ?1")

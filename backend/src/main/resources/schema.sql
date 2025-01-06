@@ -33,7 +33,7 @@ create table food_ordering_system.dish_ingredient
         foreign key (dish_id) references dish (id) on delete cascade
 );
 
-create table food_ordering_system.`order`
+create table food_ordering_system.customer_order
 (
     id          bigint  not null auto_increment primary key,
     status      int     not null,
@@ -50,7 +50,7 @@ create table food_ordering_system.order_dish
     order_id bigint not null,
     dish_id  bigint not null,
     constraint order__fk
-        foreign key (order_id) references `order` (id) on delete cascade,
+        foreign key (order_id) references customer_order (id) on delete cascade,
     constraint dish__fk
         foreign key (dish_id) references dish (id) on delete cascade
 );
@@ -68,13 +68,17 @@ create table food_ordering_system.error_message
 #Empty Table
 delete from food_ordering_system.user;
 delete from food_ordering_system.dish;
-delete from food_ordering_system.order;
+delete from food_ordering_system.customer_order;
 delete from food_ordering_system.order_dish;
 delete from food_ordering_system.error_message;
+delete from food_ordering_system.ingredient;
+delete from food_ordering_system.dish_ingredient;
 
 #Delete Table
 drop table food_ordering_system.user;
 drop table food_ordering_system.dish;
-drop table food_ordering_system.order;
+drop table food_ordering_system.customer_order;
 drop table food_ordering_system.order_dish;
 drop table food_ordering_system.error_message;
+drop table food_ordering_system.ingredient;
+drop table food_ordering_system.dish_ingredient;

@@ -12,7 +12,7 @@ public enum UserPermission {
     CanReadUsers     (1 << 0, "can_read_users"),
     CanCreateUsers   (1 << 1, "can_create_users"),
     CanUpdateUsers   (1 << 2, "can_update_users"),
-    CanDeleteUsers   (1 << 3, "can_delete_users"),
+    CanDeleteUsers   (1 << 3, "can_delete_users"), //TODO if it can delete users its admin
     CanSearchOrder   (1 << 4, "can_search_order"),
     CanPlaceOrder    (1 << 5, "can_place_order"),
     CanCancelOrder   (1 << 6, "can_cancel_order"),

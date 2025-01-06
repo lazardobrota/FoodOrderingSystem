@@ -6,8 +6,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
-@Table(name = "order")
+@Entity(name = "CustomerOrder")
+@Table(name = "customer_order")
 public class Order {
 
     @Id
@@ -17,7 +17,7 @@ public class Order {
     @Column(nullable = false)
     private int status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
 

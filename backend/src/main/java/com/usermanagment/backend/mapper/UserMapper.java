@@ -1,7 +1,7 @@
 package com.usermanagment.backend.mapper;
 
-import com.usermanagment.backend.dto.UserDto;
-import com.usermanagment.backend.dto.UserUpdateDto;
+import com.usermanagment.backend.dto.user.UserDto;
+import com.usermanagment.backend.dto.user.UserUpdateDto;
 import com.usermanagment.backend.permission.UserPermission;
 import com.usermanagment.backend.model.User;
 import lombok.NoArgsConstructor;

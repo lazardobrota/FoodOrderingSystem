@@ -1,7 +1,5 @@
 package com.usermanagment.backend.repository;
 
-import com.usermanagment.backend.model.DishIngredient;
-import com.usermanagment.backend.model.Order;
 import com.usermanagment.backend.model.OrderDish;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -12,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IOrderDish extends JpaRepository<OrderDish, Long>, JpaSpecificationExecutor<OrderDish> {
+public interface IOrderDishRepo extends JpaRepository<OrderDish, Long>, JpaSpecificationExecutor<OrderDish> {
 
     Optional<OrderDish> findById(long id);
 
