@@ -1,14 +1,15 @@
-package com.usermanagment.backend.service;
+package com.usermanagment.backend.service.impl;
 
 import com.usermanagment.backend.dto.user.UserDto;
 import com.usermanagment.backend.dto.user.UserLoginDto;
 import com.usermanagment.backend.dto.user.UserTokenDto;
 import com.usermanagment.backend.dto.user.UserUpdateDto;
-import com.usermanagment.backend.exception.UserException;
+import com.usermanagment.backend.exception.FoodException;
 import com.usermanagment.backend.mapper.UserMapper;
 import com.usermanagment.backend.model.User;
 import com.usermanagment.backend.repository.IUserRepo;
 import com.usermanagment.backend.security.JwtService;
+import com.usermanagment.backend.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService implements IUserService{
+public class UserService implements IUserService {
 
     private final IUserRepo userRepo;
     private final UserMapper userMapper;
@@ -38,8 +39,8 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserDto getUserById(Long id) throws UserException {
-        User user = userRepo.findByUserId(id).orElseThrow(() -> new UserException("User not found with given id", HttpStatus.BAD_REQUEST));
+    public UserDto getUserById(Long id) throws FoodException {
+        User user = userRepo.findByUserId(id).orElseThrow(() -> new FoodException("User not found with given id", HttpStatus.BAD_REQUEST));
         return userMapper.userToUserDto(user);
     }
 
@@ -47,7 +48,7 @@ public class UserService implements IUserService{
     public UserDto createUser(UserUpdateDto userUpdateDto) {
         Optional<User> optionalUser = userRepo.findByEmail(userUpdateDto.getEmail());
         if (optionalUser.isPresent())
-            throw new UserException("There is already user with that email", HttpStatus.BAD_REQUEST);
+            throw new FoodException("There is already user with that email", HttpStatus.BAD_REQUEST);
 
         userUpdateDto.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
 
@@ -57,11 +58,11 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserDto updateUser(Long id, UserUpdateDto userUpdateDto) throws UserException {
+    public UserDto updateUser(Long id, UserUpdateDto userUpdateDto) throws FoodException {
         Optional<User> optionalUser = userRepo.findByEmail(userUpdateDto.getEmail());
         if (optionalUser.isPresent() && !optionalUser.get().getId().equals(id))
-            throw new UserException("There is already user with that email", HttpStatus.BAD_REQUEST);
-        User user = userRepo.findByUserId(id).orElseThrow(() -> new UserException("User not found with given id", HttpStatus.BAD_REQUEST));
+            throw new FoodException("There is already user with that email", HttpStatus.BAD_REQUEST);
+        User user = userRepo.findByUserId(id).orElseThrow(() -> new FoodException("User not found with given id", HttpStatus.BAD_REQUEST));
 
         if (!userUpdateDto.getPassword().equals(user.getPassword()))
             userUpdateDto.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
@@ -79,7 +80,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserTokenDto login(UserLoginDto userLoginDto) throws UserException {
+    public UserTokenDto login(UserLoginDto userLoginDto) throws FoodException {
 
         System.out.println(userLoginDto.getEmail() + " " + userLoginDto.getPassword());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -88,14 +89,14 @@ public class UserService implements IUserService{
         ));
 
         User user = userRepo.findByEmail(userLoginDto.getEmail())
-                .orElseThrow(() -> new UserException("User not found with given email", HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new FoodException("User not found with given email", HttpStatus.BAD_REQUEST));
 
         return new UserTokenDto(userMapper.userToUserDto(user), jwtService.generateToken(user));
     }
 
     @Override
     public UserUpdateDto getEditableUserById(Long id) {
-        User user = userRepo.findByUserId(id).orElseThrow(() -> new UserException("User not found with given id", HttpStatus.BAD_REQUEST));;
+        User user = userRepo.findByUserId(id).orElseThrow(() -> new FoodException("User not found with given id", HttpStatus.BAD_REQUEST));;
         return userMapper.userToUserUpdateDto(user);
     }
 }

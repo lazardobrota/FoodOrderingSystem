@@ -1,6 +1,6 @@
 package com.usermanagment.backend.utils;
 
-import com.usermanagment.backend.exception.UserException;
+import com.usermanagment.backend.exception.FoodException;
 import org.springframework.http.ResponseEntity;
 
 import java.util.function.Supplier;
@@ -11,7 +11,7 @@ public class ExceptionUtils {
         try {
             return supplier.get();
         }
-        catch (UserException exception) {
+        catch (FoodException exception) {
             System.out.println(exception.getMessage() + " -- " + exception.getHttpStatus());
             return ResponseEntity.status(exception.getHttpStatus()).build();
         }

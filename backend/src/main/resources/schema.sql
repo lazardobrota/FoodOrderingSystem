@@ -17,8 +17,9 @@ create table food_ordering_system.ingredient
 
 create table food_ordering_system.dish
 (
-    id   bigint       not null auto_increment,
-    name varchar(255) not null unique,
+    id          bigint       not null auto_increment,
+    name        varchar(255) not null unique,
+    description varchar(255) not null,
     primary key (id)
 );
 
@@ -49,6 +50,7 @@ create table food_ordering_system.order_dish
     id       bigint not null auto_increment primary key,
     order_id bigint not null,
     dish_id  bigint not null,
+    amount   int    not null,
     constraint order__fk
         foreign key (order_id) references customer_order (id) on delete cascade,
     constraint dish__fk

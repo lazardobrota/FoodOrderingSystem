@@ -19,5 +19,15 @@ public class RequestPermission {
         //Orders
         authorizeHttp.requestMatchers(HttpMethod.GET, "/order").hasAuthority(UserPermission.CanTrackOrder.getName());
         authorizeHttp.requestMatchers(HttpMethod.POST, "/order/create").hasAuthority(UserPermission.CanPlaceOrder.getName());
+
+        //Dish
+        authorizeHttp.requestMatchers(HttpMethod.GET, "/dish").permitAll();
+        authorizeHttp.requestMatchers(HttpMethod.GET, "/dish/{id}").permitAll();
+        authorizeHttp.requestMatchers(HttpMethod.POST, "/dish").hasAuthority(UserPermission.CanDeleteUsers.getName());
+
+        //Ingredient
+        authorizeHttp.requestMatchers(HttpMethod.GET, "/ingredient").permitAll();
+        authorizeHttp.requestMatchers(HttpMethod.POST, "/ingredient").hasAuthority(UserPermission.CanDeleteUsers.getName());
+        authorizeHttp.requestMatchers(HttpMethod.PUT, "/ingredient").hasAuthority(UserPermission.CanDeleteUsers.getName());
     }
 }

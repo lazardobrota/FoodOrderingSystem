@@ -4,12 +4,12 @@ import lombok.Getter;
 import org.springframework.http.HttpStatusCode;
 
 @Getter
-public class UserException extends RuntimeException {
+public class FoodException extends RuntimeException {
 
     private final String message;
     private final HttpStatusCode httpStatus;
 
-    public UserException(String message, HttpStatusCode httpStatus){
+    public FoodException(String message, HttpStatusCode httpStatus){
         this.message = message;
         this.httpStatus = httpStatus;
     }

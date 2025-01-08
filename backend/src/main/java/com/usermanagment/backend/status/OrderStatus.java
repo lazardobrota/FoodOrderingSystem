@@ -26,7 +26,7 @@ public enum OrderStatus {
     }
 
     public static int getNextOrderStatus(int value) {
-        if (value == 1 << 3)
+        if (value == DELIVERED.value)
             return value;
 
         return value << 1;
@@ -40,4 +40,5 @@ public enum OrderStatus {
 
         return CANCEL;
     }
+
 }

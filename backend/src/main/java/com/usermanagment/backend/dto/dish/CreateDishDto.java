@@ -10,9 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DishDto {
-
-    private Long id;
+public class CreateDishDto {
 
     private String name;
 

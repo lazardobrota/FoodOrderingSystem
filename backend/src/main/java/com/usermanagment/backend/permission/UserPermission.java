@@ -2,10 +2,7 @@ package com.usermanagment.backend.permission;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public enum UserPermission {
@@ -57,5 +54,9 @@ public enum UserPermission {
         }
 
         return result;
+    }
+
+    public static String[] getAdminPermissions() {
+        return Arrays.stream(UserPermission.values()).map(UserPermission::name).toArray(String[]::new);
     }
 }

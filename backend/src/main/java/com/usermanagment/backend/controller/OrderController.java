@@ -24,7 +24,7 @@ public class OrderController {
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(orderService.getAllOrders(pageable)));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody @Valid CreateOrderDto createOrderDto) {
         return ExceptionUtils.handleResponse(() -> new ResponseEntity<>(orderService.createOrder(createOrderDto), HttpStatus.CREATED));
     }

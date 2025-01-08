@@ -18,4 +18,7 @@ public class OrderDish {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "dish_id", nullable = false)
     private Dish dish;
+
+    @Column(nullable = false)
+    private int amount;
 }

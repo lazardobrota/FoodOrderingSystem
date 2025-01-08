@@ -1,6 +1,8 @@
 package com.usermanagment.backend.config;
 
+import com.usermanagment.backend.model.Ingredient;
 import com.usermanagment.backend.model.User;
+import com.usermanagment.backend.repository.IIngredientRepo;
 import com.usermanagment.backend.repository.IUserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -12,14 +14,48 @@ import org.springframework.stereotype.Component;
 public class SeedDataLoader implements CommandLineRunner {
 
     private final IUserRepo userRepo;
+    private final IIngredientRepo ingredientRepo;
 
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
         seedUsers();
+        seedIngredients();
     }
 
+    private void seedIngredients() {
+        if (ingredientRepo.count() != 0)
+            return;
+
+        Ingredient ingredient = new Ingredient();
+        ingredient.setName("Ketchup");
+        ingredientRepo.save(ingredient);
+
+        ingredient = new Ingredient();
+        ingredient.setName("Mustard");
+        ingredientRepo.save(ingredient);
+
+        ingredient = new Ingredient();
+        ingredient.setName("Cabbage");
+        ingredientRepo.save(ingredient);
+
+        ingredient = new Ingredient();
+        ingredient.setName("Onion");
+        ingredientRepo.save(ingredient);
+
+        ingredient = new Ingredient();
+        ingredient.setName("Pepper");
+        ingredientRepo.save(ingredient);
+
+        ingredient = new Ingredient();
+        ingredient.setName("Pistachios");
+        ingredientRepo.save(ingredient);
+
+        ingredient = new Ingredient();
+        ingredient.setName("Parmesan");
+        ingredientRepo.save(ingredient);
+    }
     private void seedUsers() {
         if (userRepo.count() != 0)
             return;
