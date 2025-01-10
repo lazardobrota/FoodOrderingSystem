@@ -32,11 +32,11 @@ public class DishService implements IDishService {
 
     @Override
     public Page<DishDto> getAll(Pageable pageable) {
-        return dishRepo.findAll(pageable).map(dish ->  dishMapper.toDishDto(dish, getIngredients(dish)));
+        return dishRepo.findAll(pageable).map(dishMapper::toDishDto);
     }
 
     @Override
-    public DishDto getDishById(int id) {
+    public DishDto getDishById(Long id) {
         return dishRepo.findById(id)
                 .map(dish -> dishMapper.toDishDto(dish, getIngredients(dish)))
                 .orElseThrow(() -> new FoodException("Dish not found with given id", HttpStatus.BAD_REQUEST));

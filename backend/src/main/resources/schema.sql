@@ -20,6 +20,7 @@ create table food_ordering_system.dish
     id          bigint       not null auto_increment,
     name        varchar(255) not null unique,
     description varchar(255) not null,
+    price       int          not null,
     primary key (id)
 );
 
@@ -57,6 +58,17 @@ create table food_ordering_system.order_dish
         foreign key (dish_id) references dish (id) on delete cascade
 );
 
+create table food_ordering_system.order_dish_ingredient
+(
+    id            bigint not null auto_increment primary key,
+    order_dish_id bigint not null,
+    ingredient_id bigint not null,
+    constraint ingredient__fk2
+        foreign key (ingredient_id) references ingredient (id) on delete cascade,
+    constraint order_dish__fk
+        foreign key (order_dish_id) references order_dish (id) on delete cascade
+);
+
 #TODO Change params
 create table food_ordering_system.error_message
 (
@@ -75,6 +87,7 @@ delete from food_ordering_system.order_dish;
 delete from food_ordering_system.error_message;
 delete from food_ordering_system.ingredient;
 delete from food_ordering_system.dish_ingredient;
+delete from food_ordering_system.order_dish_ingredient;
 
 #Delete Table
 drop table food_ordering_system.user;
@@ -84,3 +97,4 @@ drop table food_ordering_system.order_dish;
 drop table food_ordering_system.error_message;
 drop table food_ordering_system.ingredient;
 drop table food_ordering_system.dish_ingredient;
+drop table food_ordering_system.order_dish_ingredient;

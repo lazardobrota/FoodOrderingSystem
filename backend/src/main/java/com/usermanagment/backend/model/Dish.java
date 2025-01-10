@@ -17,4 +17,7 @@ public class Dish {
 
     @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
+    private int price;
 }

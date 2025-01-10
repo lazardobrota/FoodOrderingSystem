@@ -16,5 +16,8 @@ public class CreateDishDto {
 
     private String description;
 
+    private int price;
+
     private List<IngredientDto> ingredients;
+
 }

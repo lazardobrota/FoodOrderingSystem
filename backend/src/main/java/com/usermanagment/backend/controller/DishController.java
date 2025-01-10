@@ -25,7 +25,7 @@ public class DishController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DishDto> findById(@PathVariable("id") int id) {
+    public ResponseEntity<DishDto> findById(@PathVariable("id") Long id) {
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(dishService.getDishById(id)));
     }
 

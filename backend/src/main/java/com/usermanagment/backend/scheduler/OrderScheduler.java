@@ -19,7 +19,6 @@ public class OrderScheduler {
     @Scheduled(fixedRate = 10_000)
     public void updateOrderStatus() {
         List<Order> orders = orderRepo.findOrdersReadyForStatusUpdate();
-
         if (orders.isEmpty())
             return;
 
@@ -31,6 +30,7 @@ public class OrderScheduler {
                 order.setActive(false);
         }
 
+        System.out.println(orders);
         orderRepo.saveAll(orders);
     }
 }

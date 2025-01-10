@@ -24,9 +24,9 @@ public interface IOrderRepo extends JpaRepository<Order, Long>, JpaSpecification
 
     @Query("SELECT o FROM CustomerOrder o " +
             "WHERE   (o.active = true) " +
-            "   AND ((o.status = :orderedStatus AND o.createdDate <= :orderedThreshold) " +
+            "   AND ((o.status = :orderedStatus   AND o.createdDate <= :orderedThreshold) " +
             "   OR   (o.status = :preparingStatus AND o.createdDate <= :preparingThreshold) " +
-            "   OR   (o.status = :deliveryStatus AND o.createdDate <= :deliveryThreshold))")
+            "   OR   (o.status = :deliveryStatus  AND o.createdDate <= :deliveryThreshold))")
     List<Order> findOrdersReadyForStatusUpdate(
             @Param("orderedStatus") int orderedStatus,
             @Param("preparingStatus") int preparingStatus,
@@ -42,8 +42,8 @@ public interface IOrderRepo extends JpaRepository<Order, Long>, JpaSpecification
                 OrderStatus.PREPARING.getValue(),
                 OrderStatus.IN_DELIVERY.getValue(),
                 LocalDateTime.now().minusSeconds(10),
-                LocalDateTime.now().minusSeconds(15),
-                LocalDateTime.now().minusSeconds(20)
+                LocalDateTime.now().minusSeconds(10 + 15),
+                LocalDateTime.now().minusSeconds(10 + 15 + 20)
         );
     }
 }

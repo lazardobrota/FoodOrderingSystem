@@ -24,6 +24,11 @@ public class OrderController {
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(orderService.getAllOrders(pageable)));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDto> getById(@PathVariable("id") Long id) {
+        return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(orderService.findOrderById(id)));
+    }
+
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody @Valid CreateOrderDto createOrderDto) {
         return ExceptionUtils.handleResponse(() -> new ResponseEntity<>(orderService.createOrder(createOrderDto), HttpStatus.CREATED));

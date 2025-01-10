@@ -1,11 +1,13 @@
 package com.usermanagment.backend.mapper;
 
 import com.usermanagment.backend.dto.dish.CreateDishDto;
+import com.usermanagment.backend.dto.dish.DishAmountDto;
 import com.usermanagment.backend.dto.dish.DishDto;
 import com.usermanagment.backend.dto.ingredient.IngredientDto;
 import com.usermanagment.backend.model.Dish;
 import com.usermanagment.backend.model.DishIngredient;
 import com.usermanagment.backend.model.Ingredient;
+import com.usermanagment.backend.model.OrderDish;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,9 +17,10 @@ public class DishMapper {
 
     public Dish toDish(DishDto dishDto) {
         Dish dish = new Dish();
-        dish.setId(dish.getId());
+        dish.setId(dishDto.getId());
         dish.setName(dishDto.getName());
         dish.setDescription(dishDto.getDescription());
+        dish.setPrice(dishDto.getPrice());
 
         return dish;
     }
@@ -26,6 +29,7 @@ public class DishMapper {
         Dish dish = new Dish();
         dish.setName(createDishDto.getName());
         dish.setDescription(createDishDto.getDescription());
+        dish.setPrice(createDishDto.getPrice());
 
         return dish;
     }
@@ -35,8 +39,22 @@ public class DishMapper {
                 dish.getId(),
                 dish.getName(),
                 dish.getDescription(),
+                dish.getPrice(),
                 ingredients
         );
+    }
+
+    public DishDto toDishDto(Dish dish) {
+        return new DishDto(
+                dish.getId(),
+                dish.getName(),
+                dish.getDescription(),
+                dish.getPrice()
+        );
+    }
+
+    public DishAmountDto toDishAmountDto(OrderDish orderDish) {
+        return new DishAmountDto(toDishDto(orderDish.getDish()), orderDish.getAmount());
     }
 
     public DishIngredient toDishIngredient(Dish dish, Ingredient ingredient) {
@@ -45,4 +63,5 @@ public class DishMapper {
         dishIngredient.setIngredient(ingredient);
         return dishIngredient;
     }
+
 }

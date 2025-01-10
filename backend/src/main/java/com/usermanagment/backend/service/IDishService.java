@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 public interface IDishService {
 
     Page<DishDto> getAll(Pageable pageable);
-    DishDto getDishById(int id);
+    DishDto getDishById(Long id);
     DishDto createDish(CreateDishDto createDishDto);
 }

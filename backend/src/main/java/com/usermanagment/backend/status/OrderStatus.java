@@ -1,13 +1,6 @@
 package com.usermanagment.backend.status;
 
-import com.usermanagment.backend.permission.UserPermission;
-import com.usermanagment.backend.utils.UserUtils;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Getter
 public enum OrderStatus {
@@ -26,7 +19,7 @@ public enum OrderStatus {
     }
 
     public static int getNextOrderStatus(int value) {
-        if (value == DELIVERED.value)
+        if (value == DELIVERED.value || value == CANCEL.value)
             return value;
 
         return value << 1;
