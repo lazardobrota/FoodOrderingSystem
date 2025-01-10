@@ -2,10 +2,12 @@ package com.usermanagment.backend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "dish_ingredient")
+@NoArgsConstructor
 public class DishIngredient {
 
     @Id
@@ -19,4 +21,9 @@ public class DishIngredient {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "dish_id", nullable = false)
     private Dish dish;
+
+    public DishIngredient(Ingredient ingredient, Dish dish) {
+        this.ingredient = ingredient;
+        this.dish = dish;
+    }
 }

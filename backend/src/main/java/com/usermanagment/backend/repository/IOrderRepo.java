@@ -19,14 +19,14 @@ public interface IOrderRepo extends JpaRepository<Order, Long>, JpaSpecification
     @Query("select o from CustomerOrder o where o.createdBy.id = ?1")
     List<Order> findAllOfUser(long id);
 
-    @Query("select o from CustomerOrder o where o.active = true and o.createdDate < ?1")
+    @Query("select o from CustomerOrder o where o.active = true and o.scheduleDate < ?1")
     List<Order> findAllActiveBeforeDate(LocalDateTime date);
 
     @Query("SELECT o FROM CustomerOrder o " +
             "WHERE   (o.active = true) " +
-            "   AND ((o.status = :orderedStatus   AND o.createdDate <= :orderedThreshold) " +
-            "   OR   (o.status = :preparingStatus AND o.createdDate <= :preparingThreshold) " +
-            "   OR   (o.status = :deliveryStatus  AND o.createdDate <= :deliveryThreshold))")
+            "   AND ((o.status = :orderedStatus   AND o.scheduleDate <= :orderedThreshold) " +
+            "   OR   (o.status = :preparingStatus AND o.scheduleDate <= :preparingThreshold) " +
+            "   OR   (o.status = :deliveryStatus  AND o.scheduleDate <= :deliveryThreshold))")
     List<Order> findOrdersReadyForStatusUpdate(
             @Param("orderedStatus") int orderedStatus,
             @Param("preparingStatus") int preparingStatus,

@@ -1,24 +1,30 @@
 package com.usermanagment.backend.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "order_dish")
+@NoArgsConstructor
 public class OrderDish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "dish_id", nullable = false)
     private Dish dish;
 
-    @Column(nullable = false)
-    private int amount;
+    public OrderDish(Order order, Dish dish) {
+        this.order = order;
+        this.dish = dish;
+    }
 }

@@ -53,10 +53,6 @@ public class DishMapper {
         );
     }
 
-    public DishAmountDto toDishAmountDto(OrderDish orderDish) {
-        return new DishAmountDto(toDishDto(orderDish.getDish()), orderDish.getAmount());
-    }
-
     public DishIngredient toDishIngredient(Dish dish, Ingredient ingredient) {
         DishIngredient dishIngredient = new DishIngredient();
         dishIngredient.setDish(dish);

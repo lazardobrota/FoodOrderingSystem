@@ -1,13 +1,18 @@
 package com.usermanagment.backend.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "CustomerOrder")
 @Table(name = "customer_order")
+@NoArgsConstructor
 public class Order {
 
     @Id
@@ -24,6 +29,27 @@ public class Order {
     @Column(nullable = false)
     private boolean active;
 
-    @Column(name = "created_date", nullable = false)
-    private LocalDateTime createdDate;
+    @Column(name = "schedule_date", nullable = false)
+    private LocalDateTime scheduleDate;
+
+    @ManyToMany
+    @JoinTable(
+            name = "order_dish",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id"))
+    private List<Dish> dishes;
+
+    public Order(int status, User createdBy, boolean active, LocalDateTime scheduleDate) {
+        this.status = status;
+        this.createdBy = createdBy;
+        this.active = active;
+        this.scheduleDate = scheduleDate;
+    }
+
+    public Order(Long id, int status, User createdBy, boolean active) {
+        this.id = id;
+        this.status = status;
+        this.createdBy = createdBy;
+        this.active = active;
+    }
 }

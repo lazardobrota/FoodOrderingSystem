@@ -1,11 +1,14 @@
 package com.usermanagment.backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "dish")
+@NoArgsConstructor
 public class Dish {
 
     @Id
@@ -20,4 +23,10 @@ public class Dish {
 
     @Column(nullable = false)
     private int price;
+
+    public Dish(String name, String description, int price) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
 }

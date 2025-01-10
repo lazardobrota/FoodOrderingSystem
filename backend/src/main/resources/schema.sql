@@ -37,11 +37,11 @@ create table food_ordering_system.dish_ingredient
 
 create table food_ordering_system.customer_order
 (
-    id          bigint  not null auto_increment primary key,
-    status      int     not null,
-    createdBy   bigint  not null,
-    createdDate datetime not null,
-    active      bool not null,
+    id           bigint  not null auto_increment primary key,
+    status       int     not null,
+    createdBy    bigint  not null,
+    scheduleDate datetime not null,
+    active       bool not null,
     constraint user___fk
         foreign key (createdBy) references user (id) on delete cascade
 );
@@ -51,22 +51,10 @@ create table food_ordering_system.order_dish
     id       bigint not null auto_increment primary key,
     order_id bigint not null,
     dish_id  bigint not null,
-    amount   int    not null,
     constraint order__fk
         foreign key (order_id) references customer_order (id) on delete cascade,
     constraint dish__fk
         foreign key (dish_id) references dish (id) on delete cascade
-);
-
-create table food_ordering_system.order_dish_ingredient
-(
-    id            bigint not null auto_increment primary key,
-    order_dish_id bigint not null,
-    ingredient_id bigint not null,
-    constraint ingredient__fk2
-        foreign key (ingredient_id) references ingredient (id) on delete cascade,
-    constraint order_dish__fk
-        foreign key (order_dish_id) references order_dish (id) on delete cascade
 );
 
 #TODO Change params
@@ -87,7 +75,6 @@ delete from food_ordering_system.order_dish;
 delete from food_ordering_system.error_message;
 delete from food_ordering_system.ingredient;
 delete from food_ordering_system.dish_ingredient;
-delete from food_ordering_system.order_dish_ingredient;
 
 #Delete Table
 drop table food_ordering_system.user;
@@ -97,4 +84,3 @@ drop table food_ordering_system.order_dish;
 drop table food_ordering_system.error_message;
 drop table food_ordering_system.ingredient;
 drop table food_ordering_system.dish_ingredient;
-drop table food_ordering_system.order_dish_ingredient;

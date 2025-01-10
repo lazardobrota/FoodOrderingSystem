@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
@@ -22,6 +25,15 @@ public class OrderScheduler {
         if (orders.isEmpty())
             return;
 
+//        System.out.println("AAAAAA");
+//        try(ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor()) {
+//            scheduledExecutorService.schedule(() -> System.out.println("lol"), 2000, TimeUnit.MILLISECONDS);
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+
         for (Order order : orders) {
             order.setStatus(OrderStatus.getNextOrderStatus(order.getStatus()));
 
@@ -30,7 +42,6 @@ public class OrderScheduler {
                 order.setActive(false);
         }
 
-        System.out.println(orders);
         orderRepo.saveAll(orders);
     }
 }

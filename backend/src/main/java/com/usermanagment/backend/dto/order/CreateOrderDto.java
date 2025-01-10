@@ -1,7 +1,7 @@
 package com.usermanagment.backend.dto.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.usermanagment.backend.dto.dish.DishAmountDto;
+import com.usermanagment.backend.dto.dish.DishDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +17,5 @@ public class CreateOrderDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
-    private List<DishAmountDto> dishes;
+    private List<DishDto> dishes;
 }
