@@ -16,11 +16,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -90,8 +93,9 @@ public class UserService implements IUserService {
 
         User user = userRepo.findByEmail(userLoginDto.getEmail())
                 .orElseThrow(() -> new FoodException("User not found with given email", HttpStatus.BAD_REQUEST));
+        String authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 
-        return new UserTokenDto(userMapper.userToUserDto(user), jwtService.generateToken(user));
+        return new UserTokenDto(userMapper.userToUserDto(user), jwtService.generateToken(Map.of(jwtService.getPermissionsName(), authorities), user));
     }
 
     @Override

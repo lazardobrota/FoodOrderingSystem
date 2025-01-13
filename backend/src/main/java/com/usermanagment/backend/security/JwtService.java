@@ -1,29 +1,43 @@
 package com.usermanagment.backend.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Getter
 public class JwtService {
 
     @Value("${user.secret.key}")
     private String SECRET_KEY;
+    private final String permissionsName = "permissions";
 
     public String extractUserEmail(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public Collection<? extends GrantedAuthority> extractPermissions(String token) {
+        String permissions = extractClaim(token, claims -> claims.get(permissionsName, String.class));
+        return permissions == null ? new HashSet<>() :
+                Arrays.stream(permissions.split(","))
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -56,6 +70,19 @@ public class JwtService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userEmail = extractUserEmail(token);
         return userEmail.equals(userDetails.getUsername());
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            Jwts.parser()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseSignedClaims(token);
+            return true;
+        }
+        catch (JwtException e) {
+            return false;
+        }
     }
 
     private Key getSignInKey() {
