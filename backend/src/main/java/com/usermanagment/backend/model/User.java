@@ -58,4 +58,28 @@ public class User implements UserDetails {
         this.password = password;
         this.permissionsBitMask = permissionsBitMask;
     }
+
+    public static String id() {
+        return "id";
+    }
+
+    public static String name() {
+        return "name";
+    }
+
+    public static String lastname() {
+        return "lastname";
+    }
+
+    public static String email() {
+        return "email";
+    }
+
+    public static String password() {
+        return "password";
+    }
+
+    public static String permissionsBitMask() {
+        return "permissionsBitMask";
+    }
 }

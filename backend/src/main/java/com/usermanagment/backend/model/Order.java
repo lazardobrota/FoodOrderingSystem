@@ -52,4 +52,23 @@ public class Order {
         this.createdBy = createdBy;
         this.active = active;
     }
+
+
+    public static String id() {
+        return "id";
+    }
+
+    public static String status() {
+        return "status";
+    }
+    public static String createdBy() {
+        return "createdBy";
+    }
+    public static String active() {
+        return "active";
+    }
+    public static String scheduleDate() {
+        return "scheduleDate";
+    }
+
 }

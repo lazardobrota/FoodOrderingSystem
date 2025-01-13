@@ -1,6 +1,10 @@
 package com.usermanagment.backend.status;
 
+import com.usermanagment.backend.permission.UserPermission;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public enum OrderStatus {
@@ -34,4 +38,12 @@ public enum OrderStatus {
         return CANCEL;
     }
 
+    public static List<OrderStatus> toList(int orderStatuses) {
+        List<OrderStatus> result = new ArrayList<>();
+        for (OrderStatus orderStatus : OrderStatus.values()) {
+            if ((orderStatus.value & orderStatuses) > 0)
+                result.add(orderStatus);
+        }
+        return result;
+    }
 }

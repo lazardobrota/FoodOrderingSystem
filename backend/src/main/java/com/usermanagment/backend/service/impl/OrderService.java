@@ -2,14 +2,15 @@ package com.usermanagment.backend.service.impl;
 
 import com.usermanagment.backend.dto.order.CreateOrderDto;
 import com.usermanagment.backend.dto.order.OrderDto;
+import com.usermanagment.backend.params.SearchParams;
 import com.usermanagment.backend.exception.FoodException;
-import com.usermanagment.backend.mapper.DishMapper;
 import com.usermanagment.backend.mapper.OrderMapper;
 import com.usermanagment.backend.model.Order;
 import com.usermanagment.backend.model.OrderDish;
 import com.usermanagment.backend.repository.IOrderDishRepo;
 import com.usermanagment.backend.repository.IOrderRepo;
 import com.usermanagment.backend.service.IOrderService;
+import com.usermanagment.backend.specification.OrderSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,8 +31,10 @@ public class OrderService implements IOrderService {
     private final OrderMapper orderMapper;
 
     @Override
-    public Page<OrderDto> getAllOrders(Pageable pageable) {
-        return orderRepo.findAll(pageable).map(orderMapper::toOrderDto);
+    public Page<OrderDto> getAllOrders(Pageable pageable, SearchParams searchParams) {
+        OrderSpecification specification = new OrderSpecification(searchParams);
+        return orderRepo.findAll(specification.filter(), pageable)
+                .map(orderMapper::toOrderDto);
     }
 
     @Override
