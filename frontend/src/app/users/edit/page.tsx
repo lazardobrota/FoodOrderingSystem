@@ -4,7 +4,7 @@ import Header from "@/components/Header/Header";
 import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
-import { UpdateUser, User, UserPermissions } from "@/types/user";
+import { UpdateUser, User, UserPermissions, UserPermissionsInt } from "@/types/user";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -16,7 +16,7 @@ export default function UserEdit() {
   const searchParams = useSearchParams()
   const id = searchParams.get("id")
 
-  usePermissionCheck(UserPermissions.CanUpdateUsers)
+  usePermissionCheck(UserPermissionsInt.CanUpdateUsers)
 
   useEffect(() => {
     fetch(`http://localhost:8090/user/edit/${id}`, {

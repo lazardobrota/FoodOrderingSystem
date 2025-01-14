@@ -37,3 +37,17 @@ export enum UserPermissions {
   CanTrackOrder    = "can_track_order",
   CanScheduleOrder = "can_schedule_order",
 }
+
+export enum UserPermissionsInt {
+  CanReadUsers     = 1 << 0,
+  CanCreateUsers   = 1 << 1,
+  CanUpdateUsers   = 1 << 2,
+  CanDeleteUsers   = 1 << 3,
+  CanSearchOrder   = 1 << 4,
+  CanPlaceOrder    = 1 << 5,
+  CanCancelOrder   = 1 << 6,
+  CanTrackOrder    = 1 << 7,
+  CanScheduleOrder = 1 << 8
+}
+
+export const permissionsStorage = "permissions"

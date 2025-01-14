@@ -3,7 +3,7 @@
 import Header from "@/components/Header/Header"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { usePermissionCheck } from "@/hooks/credentials"
-import { User, UserPermissions } from "@/types/user"
+import { permissionsStorage, User, UserPermissions, UserPermissionsInt } from "@/types/user"
 import { useRouter } from "next/navigation"
 import { MouseEvent, useEffect, useState } from "react"
 
@@ -16,7 +16,7 @@ export default function Users() {
   const size: number = 5;
   const router = useRouter();
 
-  usePermissionCheck(UserPermissions.CanReadUsers)
+  usePermissionCheck(UserPermissionsInt.CanReadUsers)
 
   useEffect(() => {
     restCallUsers(page, size);
@@ -72,8 +72,8 @@ export default function Users() {
       .then(() => restCallUsers(page, size))
   }
 
-  function isAllowed(permission: string): boolean {
-    return localStorage.getItem(permission) !== null && localStorage.getItem(permission) === 'true'
+  function isAllowed(permission: number): boolean {
+    return localStorage.getItem(permissionsStorage) !== null && (Number(localStorage.getItem(permissionsStorage)) & permission) > 0
   }
 
 
@@ -94,7 +94,7 @@ export default function Users() {
                 <TableHead>Lastname</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Permissions</TableHead>
-                {isAllowed(UserPermissions.CanDeleteUsers) && <TableHead >Delete</TableHead>}
+                {isAllowed(UserPermissionsInt.CanDeleteUsers) && <TableHead >Delete</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -108,7 +108,7 @@ export default function Users() {
                       <label key={key} className="m-2 py-2 px-3 bg-slate-400 text-white rounded-2xl hover:cursor-pointer">{key}</label>
                     ))
                   }</TableCell>
-                  {isAllowed(UserPermissions.CanDeleteUsers) && <TableCell><button className="bg-red-700 hover:bg-red-800 px-4 py-2 rounded-full text-white" onClick={() => handleDeleteUser(user.id)}>Delete</button></TableCell>}
+                  {isAllowed(UserPermissionsInt.CanDeleteUsers) && <TableCell><button className="bg-red-700 hover:bg-red-800 px-4 py-2 rounded-full text-white" onClick={() => handleDeleteUser(user.id)}>Delete</button></TableCell>}
                 </TableRow>
               ))}
             </TableBody>

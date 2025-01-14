@@ -4,7 +4,7 @@ import Header from "@/components/Header/Header";
 import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
 import { JwtClaims } from "@/types/auth";
-import { UserLogin, UserPermissions } from "@/types/user";
+import { permissionsStorage as permissionsStorage, UserLogin, UserPermissions, UserPermissionsInt } from "@/types/user";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -15,6 +15,18 @@ export default function Login() {
   const [userLogin, setUserLogin] = useState<UserLogin>(new UserLogin)
 
   const router = useRouter()
+
+  const permissionsMap: Record<string, number> = {
+      [UserPermissions.CanCancelOrder]: UserPermissionsInt.CanCancelOrder,
+      [UserPermissions.CanCreateUsers]: UserPermissionsInt.CanCreateUsers,
+      [UserPermissions.CanDeleteUsers]: UserPermissionsInt.CanDeleteUsers,
+      [UserPermissions.CanPlaceOrder]: UserPermissionsInt.CanPlaceOrder,
+      [UserPermissions.CanReadUsers]: UserPermissionsInt.CanReadUsers,
+      [UserPermissions.CanScheduleOrder]: UserPermissionsInt.CanScheduleOrder,
+      [UserPermissions.CanSearchOrder]: UserPermissionsInt.CanSearchOrder,
+      [UserPermissions.CanTrackOrder]: UserPermissionsInt.CanTrackOrder,
+      [UserPermissions.CanUpdateUsers]: UserPermissionsInt.CanUpdateUsers,
+    }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>, userLogin: UserLogin): void {
     e.preventDefault()
@@ -35,11 +47,12 @@ export default function Login() {
         console.log(decoded)
 
         const map: Record<string, boolean> = data.user.permissions
-        localStorage.setItem("jwt", data.token) //TODO
-        localStorage.setItem(UserPermissions.CanCreateUsers, map[UserPermissions.CanCreateUsers].toString())
-        localStorage.setItem(UserPermissions.CanDeleteUsers, map[UserPermissions.CanDeleteUsers].toString())
-        localStorage.setItem(UserPermissions.CanReadUsers, map[UserPermissions.CanReadUsers].toString())
-        localStorage.setItem(UserPermissions.CanUpdateUsers, map[UserPermissions.CanUpdateUsers].toString())
+        let permissions: number = 0
+        localStorage.setItem("jwt", data.token)
+        Object.entries(map).map(([key, value]) => (
+          permissions = permissionsMap[key] === undefined ? permissions : permissions | permissionsMap[key]
+        ))
+        localStorage.setItem(permissionsStorage, permissions.toString())
 
         router.push("/home")
       })

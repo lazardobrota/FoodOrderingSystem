@@ -10,7 +10,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { usePermissionCheck } from "@/hooks/credentials";
 import { Dish } from "@/types/dish";
 import { Order, OrderStatus, OrderStatusInt, SearchParams } from "@/types/order";
-import { UserPermissions } from "@/types/user";
+import { UserPermissions, UserPermissionsInt } from "@/types/user";
 import { useRouter } from "next/navigation";
 import { MouseEvent, useEffect, useState } from "react";
 import { CiCircleCheck, CiCircleRemove } from "react-icons/ci";
@@ -32,7 +32,7 @@ export default function Orders() {
     [OrderStatus.CANCEL]: OrderStatusInt.CANCEL,
   }
 
-  usePermissionCheck(UserPermissions.CanReadUsers)
+  usePermissionCheck(UserPermissionsInt.CanReadUsers)
 
   useEffect(() => {
     restCallOrders(page, size);
