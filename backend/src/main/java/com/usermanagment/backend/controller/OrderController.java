@@ -3,6 +3,7 @@ package com.usermanagment.backend.controller;
 import com.usermanagment.backend.dto.order.CreateOrderDto;
 import com.usermanagment.backend.dto.order.OrderDto;
 import com.usermanagment.backend.params.SearchParams;
+import com.usermanagment.backend.permission.UserPermission;
 import com.usermanagment.backend.service.IOrderService;
 import com.usermanagment.backend.utils.ExceptionUtils;
 import jakarta.validation.Valid;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -29,6 +32,7 @@ public class OrderController {
                                                        @RequestParam(required = false, name = "start_date") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
                                                        @RequestParam(required = false, name = "end_date"  ) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate,
                                                        @RequestParam(required = false) Integer status) {
+        userEmail = isAdmin() ? userEmail : SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParams searchParams = new SearchParams(userEmail, startDate, endDate, status);
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(orderService.getAllOrders(pageable, searchParams)));
     }
@@ -46,5 +50,11 @@ public class OrderController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteOrder(@PathVariable("id") Long id) {
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(orderService.deleteOrder(id)));
+    }
+
+    private boolean isAdmin() {
+        return SecurityContextHolder.getContext().getAuthentication()
+                .getAuthorities()
+                .contains(new SimpleGrantedAuthority(UserPermission.CanDeleteUsers.getName()));
     }
 }

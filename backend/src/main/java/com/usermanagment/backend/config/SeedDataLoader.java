@@ -45,8 +45,8 @@ public class SeedDataLoader implements CommandLineRunner {
     User admin = new User("admin", "admin", "admin@gmail.com", "admin", 511);
     User lazar = new User("Lazar", "Dobrota", "ldobrota@raf.rs", "1234", 1);
     User lazar2 = new User("Lazar", "Dobrota", "2ldobrota@raf.rs", "1234", 0);
-    User john = new User("John", "Black", "jb@gmail.com", "admin", 7);
-    User ime = new User("Ime", "Prezime", "ip@gmail.com", "admin", 15);
+    User john = new User("John", "Black", "jb@gmail.com", "admin", 135);
+    User ime = new User("Ime", "Prezime", "ip@gmail.com", "admin", 143);
 
     Order order1 = new Order(1, admin, true, LocalDateTime.of(2025, 1, 15, 12, 0, 0));
     Order order2 = new Order(1, lazar, true, LocalDateTime.of(2025, 1, 16, 14, 30, 0));
