@@ -15,7 +15,7 @@ public class OrderSpecification extends BaseSpecification<Order> {
         addUserEmail(searchParams.getUserEmail());
         addStartDate(searchParams.getStartDate());
         addEndDate(searchParams.getEndDate());
-        addOrderStatuses(searchParams.getPermissions());
+        addOrderStatuses(searchParams.getStatus());
     }
 
     private void addUserEmail(String userEmail) {

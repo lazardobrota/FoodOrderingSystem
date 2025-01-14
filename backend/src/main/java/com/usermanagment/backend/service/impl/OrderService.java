@@ -55,4 +55,10 @@ public class OrderService implements IOrderService {
                 .orElseThrow(() -> new FoodException("Order not found with given id", HttpStatus.BAD_REQUEST));
     }
 
+    @Override
+    public boolean deleteOrder(Long id) {
+        orderRepo.deleteById(id);
+        return !orderRepo.existsById(id);
+    }
+
 }

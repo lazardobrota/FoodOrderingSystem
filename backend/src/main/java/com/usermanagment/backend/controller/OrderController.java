@@ -28,8 +28,8 @@ public class OrderController {
                                                        @RequestParam(required = false, name = "user_email") String userEmail,
                                                        @RequestParam(required = false, name = "start_date") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
                                                        @RequestParam(required = false, name = "end_date"  ) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate,
-                                                       @RequestParam(required = false) Integer permissions) {
-        SearchParams searchParams = new SearchParams(userEmail, startDate, endDate, permissions);
+                                                       @RequestParam(required = false) Integer status) {
+        SearchParams searchParams = new SearchParams(userEmail, startDate, endDate, status);
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(orderService.getAllOrders(pageable, searchParams)));
     }
 
@@ -41,5 +41,10 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody @Valid CreateOrderDto createOrderDto) {
         return ExceptionUtils.handleResponse(() -> new ResponseEntity<>(orderService.createOrder(createOrderDto), HttpStatus.CREATED));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteOrder(@PathVariable("id") Long id) {
+        return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(orderService.deleteOrder(id)));
     }
 }

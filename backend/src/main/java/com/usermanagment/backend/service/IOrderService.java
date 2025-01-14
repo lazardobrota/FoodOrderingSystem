@@ -14,4 +14,6 @@ public interface IOrderService {
     OrderDto findOrderById(Long id);
 
     Page<OrderDto> getAllOrders(Pageable pageable, SearchParams searchParams);
+
+    boolean deleteOrder(Long id);
 }

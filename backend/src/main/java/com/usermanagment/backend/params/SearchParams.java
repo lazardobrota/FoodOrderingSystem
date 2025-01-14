@@ -14,6 +14,6 @@ public class SearchParams {
     private String userEmail;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private Integer permissions;
+    private Integer status;
 
 }
