@@ -1,32 +1,45 @@
 "use client"
 
 import Header from "@/components/Header/Header";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { usePermissionCheck } from "@/hooks/credentials";
-import { User, UserPermissions } from "@/types/user";
+import { Dish } from "@/types/dish";
+import { Order, OrderStatus, OrderStatusInt, SearchParams } from "@/types/order";
+import { UserPermissions } from "@/types/user";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, MouseEvent } from "react";
+import { MouseEvent, useEffect, useState } from "react";
+import { CiCircleCheck, CiCircleRemove } from "react-icons/ci";
 
 export default function Orders() {
-  const [users, setUser] = useState<User[]>([])
+  const [orders, setOrders] = useState<Order[]>([])
   const [page, setPage] = useState<number>(0);
-  const [last, setLast] = useState<boolean>(false);
+  const [isLastPage, setLastPage] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useState<SearchParams>(new SearchParams());
 
   const size: number = 5;
   const router = useRouter();
 
+  const orderStatuses: Record<string, number> = {
+    [OrderStatus.ORDERED]: OrderStatusInt.ORDERED,
+    [OrderStatus.PREPARING]: OrderStatusInt.PREPARING,
+    [OrderStatus.IN_DELIVERY]: OrderStatusInt.IN_DELIVERY,
+    [OrderStatus.DELIVERED]: OrderStatusInt.DELIVERED,
+    [OrderStatus.CANCEL]: OrderStatusInt.CANCEL,
+  }
+
   usePermissionCheck(UserPermissions.CanReadUsers)
 
   useEffect(() => {
-    restCallUsers(page, size);
+    restCallOrders(page, size);
   }, [])
 
-  function restCallUsers(page: number, size: number): void {
-    fetch(`http://localhost:8090/user/all?page=${page}&size=${size}`, {
+  function restCallOrders(page: number, size: number): void {
+    fetch(`http://localhost:8090/order?page=${page}&size=${size}&user_email=${searchParams.userEmail}&start_date=${searchParams.startDate}&end_date=${searchParams.endDate}&status=${searchParams.status}`, {
       method: "GET",
       headers: {
         'Authorization': 'Bearer ' + window.localStorage.getItem('jwt')
@@ -34,8 +47,8 @@ export default function Orders() {
     })
       .then(res => res.json())
       .then(data => {
-        setUser(data.content)
-        setLast(data.last)
+        setOrders(data.content)
+        setLastPage(data.last)
       })
   }
 
@@ -47,22 +60,18 @@ export default function Orders() {
     if (page == 0)
       return;
 
-    restCallUsers(page - 1, size);
+    restCallOrders(page - 1, size);
     setPage(page - 1);
   }
 
   function handleNext(e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void {
     e.preventDefault()
 
-    if (last)
+    if (isLastPage)
       return;
 
-    restCallUsers(page + 1, size);
+    restCallOrders(page + 1, size);
     setPage(page + 1);
-  }
-
-  function handleRowPress(id: number): void {
-    router.push(`/users/edit?id=${id}`)
   }
 
   function handleDeleteUser(id: number): void {
@@ -72,91 +81,70 @@ export default function Orders() {
         'Authorization': 'Bearer ' + window.localStorage.getItem('jwt')
       }
     })
-      .then(() => restCallUsers(page, size))
+      .then(() => restCallOrders(page, size))
   }
 
   function isAllowed(permission: string): boolean {
     return localStorage.getItem(permission) !== null && localStorage.getItem(permission) === 'true'
   }
 
-
-  if (users.length === 0)
-    return;
-
   return (
     <div className="flex flex-col gap-14">
       <Header></Header>
 
       <div className="px-32 flex flex-col gap-4">
-
-        <div>
-          <Button>Create Order</Button>
-        </div>
-
         <div className="flex flex-col gap-6">
           {/* TODO Make this grid */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-row gap-4 justify-between">
             {/* TODO Make this grid */}
             <div className="flex flex-row place-items-center gap-5 max-w-80">
-              <Label>User Id:</Label>
-              <Input />
+              <Label>User Email:</Label>
+              <Input name="email" value={searchParams.userEmail} onChange={e => setSearchParams({ ...searchParams, userEmail: e.target.value })} />
             </div>
             <div className="flex flex-row place-items-center gap-5 max-w-80">
               <Label>Date from:</Label>
-              <Input />
+              <Input name="date_from" value={searchParams.startDate} onChange={e => setSearchParams({ ...searchParams, startDate: e.target.value })} />
             </div>
             <div className="flex flex-row place-items-center gap-5 max-w-80">
               <Label>Date to:</Label>
-              <Input />
+              <Input name="date_to" value={searchParams.endDate} onChange={e => setSearchParams({ ...searchParams, endDate: e.target.value })} />
             </div>
-            <div className="flex flex-row place-items-center gap-5 max-w-80">
-              <Checkbox id="ordered" />
-              <Label htmlFor="ordered">Ordered</Label>
+            {Object.entries(orderStatuses).map(([key, value]) => (
+              <div key={key} className="flex flex-row place-items-center gap-5 max-w-80">
+                <Checkbox id={key} onClick={() => setSearchParams({...searchParams, status: searchParams.status ^ value})} />
+                <Label htmlFor={key}>{key.toUpperCase().replaceAll("_", " ")}</Label>
+              </div>))
+            }
+            <div>
+              <Button onClick={() => restCallOrders(page, size)}>Search</Button>
             </div>
-            <div className="flex flex-row place-items-center gap-5 max-w-80">
-              <Checkbox id="preparing" />
-              <Label htmlFor="preparing">Preparing</Label>
-            </div>
-            <div className="flex flex-row place-items-center gap-5 max-w-80">
-              <Checkbox id="in_delivery" />
-              <Label htmlFor="in_delivery">In Delivery</Label>
-            </div>
-            <div className="flex flex-row place-items-center gap-5 max-w-80">
-              <Checkbox id="delivered" />
-              <Label htmlFor="delivered">Delivered</Label>
-            </div>
-            <div className="flex flex-row place-items-center gap-5 max-w-80">
-              <Checkbox id="canceled" />
-              <Label htmlFor="canceled">Canceled</Label>
-            </div>
-          </div>
-          <div>
-            <Button>Search</Button>
           </div>
 
           <Table>
             <TableCaption>Users</TableCaption>
             <TableHeader className="p-10">
               <TableRow className="hover:bg-white">
-                <TableHead>Name</TableHead>
-                <TableHead>Lastname</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Permissions</TableHead>
-                {isAllowed(UserPermissions.CanDeleteUsers) && <TableHead >Delete</TableHead>}
+                <TableHead>Status</TableHead>
+                <TableHead>Active</TableHead>
+                <TableHead>Dishes</TableHead>
+                <TableHead>Scheduled</TableHead>
+                {isAllowed(UserPermissions.CanDeleteUsers) && <TableHead >Action</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user: User) => (
-                <TableRow key={user.id} className="hover:cursor-pointer">
-                  <TableCell onClick={() => handleRowPress(user.id)}>{user.name}</TableCell>
-                  <TableCell onClick={() => handleRowPress(user.id)}>{user.lastname}</TableCell>
-                  <TableCell onClick={() => handleRowPress(user.id)}>{user.email}</TableCell>
-                  <TableCell onClick={() => handleRowPress(user.id)}>{
-                    Object.entries(user.permissions).filter(([_, value]) => value === true).map(([key]) => (
-                      <label key={key} className="m-2 py-2 px-3 bg-slate-400 text-white rounded-2xl hover:cursor-pointer">{key}</label>
+              {orders.map((order: Order) => (
+                <TableRow key={order.id}>
+                  <TableCell>{order.createdBy.email}</TableCell>
+                  <TableCell>{order.status.replaceAll("_", " ")}</TableCell>
+                  <TableCell>{order.active ? <CiCircleCheck className="text-green-600 size-6" /> : <CiCircleRemove className="text-red-600 size-6" />}</TableCell>
+                  <TableCell>{
+                    order.dishes.map((dish: Dish) => (
+                      <Badge className="m-1" key={dish.id}>{dish.name}</Badge>
                     ))
                   }</TableCell>
-                  {isAllowed(UserPermissions.CanDeleteUsers) && <TableCell><button className="bg-red-700 hover:bg-red-800 px-4 py-2 rounded-full text-white" onClick={() => handleDeleteUser(user.id)}>Cancel</button></TableCell>}
+                  <TableCell>{order.createdDate}</TableCell>
+                  {order.status === OrderStatus.ORDERED && <TableCell><Button className="bg-red-700 hover:bg-red-800">Cancel</Button></TableCell>}
                 </TableRow>
               ))}
             </TableBody>
@@ -164,8 +152,8 @@ export default function Orders() {
         </div>
 
         <div className="flex flex-row gap-3">
-          <button onClick={(e) => handleBefore(e)} className="bg-slate-300 p-2 rounded-lg hover:bg-slate-400">Before</button>
-          <button onClick={(e) => handleNext(e)} className="bg-slate-300 p-2 rounded-lg hover:bg-slate-400">Next</button>
+          <Button onClick={(e) => handleBefore(e)} className="bg-slate-300 p-2 rounded-lg hover:bg-slate-400">Before</Button>
+          <Button onClick={(e) => handleNext(e)} className="bg-slate-300 p-2 rounded-lg hover:bg-slate-400">Next</Button>
         </div>
       </div>
 

@@ -3,7 +3,9 @@
 import Header from "@/components/Header/Header";
 import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
+import { JwtClaims } from "@/types/auth";
 import { UserLogin, UserPermissions } from "@/types/user";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
@@ -29,9 +31,11 @@ export default function Login() {
     })
       .then(res => checkStatusCode(res))
       .then(data => {
-        console.log(data)
+        const decoded =jwtDecode<JwtClaims>(data.token) 
+        console.log(decoded)
+
         const map: Record<string, boolean> = data.user.permissions
-        localStorage.setItem("jwt", data.token)
+        localStorage.setItem("jwt", data.token) //TODO
         localStorage.setItem(UserPermissions.CanCreateUsers, map[UserPermissions.CanCreateUsers].toString())
         localStorage.setItem(UserPermissions.CanDeleteUsers, map[UserPermissions.CanDeleteUsers].toString())
         localStorage.setItem(UserPermissions.CanReadUsers, map[UserPermissions.CanReadUsers].toString())

@@ -27,8 +27,13 @@ export class User {
 }
 
 export enum UserPermissions {
-  CanReadUsers   = "can_read_users",
-  CanCreateUsers = "can_create_users",
-  CanUpdateUsers = "can_update_users",
-  CanDeleteUsers = "can_delete_users",
+  CanReadUsers     = "can_read_users",
+  CanCreateUsers   = "can_create_users",
+  CanUpdateUsers   = "can_update_users",
+  CanDeleteUsers   = "can_delete_users",
+  CanSearchOrder   = "can_search_order",
+  CanPlaceOrder    = "can_place_order",
+  CanCancelOrder   = "can_cancel_order",
+  CanTrackOrder    = "can_track_order",
+  CanScheduleOrder = "can_schedule_order",
 }
