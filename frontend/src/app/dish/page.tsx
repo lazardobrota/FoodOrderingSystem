@@ -2,10 +2,10 @@ import { Counter } from "@/components/counter/Counter";
 import Header from "@/components/Header/Header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function Dish() {
+
   return (
     <div className="flex flex-col gap-4">
       <Header></Header>

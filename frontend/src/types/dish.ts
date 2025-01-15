@@ -1,9 +1,9 @@
 import { Ingredient } from "./ingredient";
 
-export interface Dish {
-  id: number,
-  name: string,
-  description: string,
-  price: number,
-  ingredients: Ingredient[]
+export class Dish {
+  id: number = 0
+  name: string = ""
+  description: string =""
+  price: number = 0
+  ingredients: Ingredient[] = []
 }

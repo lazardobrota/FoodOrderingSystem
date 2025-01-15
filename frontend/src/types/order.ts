@@ -10,6 +10,10 @@ export interface Order {
   dishes: Dish[]
 }
 
+export interface DateParams {
+  givenDate: string
+}
+
 export class SearchParams {
   userEmail: string = ""
   startDate: string = ""

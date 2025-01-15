@@ -50,7 +50,7 @@ export default function Login() {
         let permissions: number = 0
         localStorage.setItem("jwt", data.token)
         Object.entries(map).map(([key, value]) => (
-          permissions = permissionsMap[key] === undefined ? permissions : permissions | permissionsMap[key]
+          permissions = !value || permissionsMap[key] === undefined ? permissions : permissions | permissionsMap[key]
         ))
         localStorage.setItem(permissionsStorage, permissions.toString())
 

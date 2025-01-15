@@ -4,7 +4,7 @@ import Header from "@/components/Header/Header";
 import { Toaster } from "@/components/ui/sonner";
 import { checkStatusCode } from "@/errors/statusCode";
 import { usePermissionCheck } from "@/hooks/credentials";
-import { UpdateUser, UserPermissions } from "@/types/user";
+import { UpdateUser, UserPermissions, UserPermissionsInt } from "@/types/user";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -14,7 +14,7 @@ export default function UserNew() {
   const [user, setUser] = useState<UpdateUser>(new UpdateUser())
   const router: AppRouterInstance = useRouter();
 
-  usePermissionCheck(UserPermissions.CanCreateUsers)
+  usePermissionCheck(UserPermissionsInt.CanCreateUsers)
 
   function handleSubmit(e: FormEvent<HTMLFormElement>, user: UpdateUser): void {
     e.preventDefault();

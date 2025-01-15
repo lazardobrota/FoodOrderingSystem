@@ -1,6 +1,7 @@
 "use client"
 
 import Header from "@/components/Header/Header";
+import { DateTimePicker24h } from "@/components/my-ui/datepicker";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,7 +11,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { usePermissionCheck } from "@/hooks/credentials";
 import { Dish } from "@/types/dish";
 import { Order, OrderStatus, OrderStatusInt, SearchParams } from "@/types/order";
-import { UserPermissions, UserPermissionsInt } from "@/types/user";
+import { permissionsStorage, UserPermissions, UserPermissionsInt } from "@/types/user";
 import { useRouter } from "next/navigation";
 import { MouseEvent, useEffect, useState } from "react";
 import { CiCircleCheck, CiCircleRemove } from "react-icons/ci";
@@ -32,7 +33,7 @@ export default function Orders() {
     [OrderStatus.CANCEL]: OrderStatusInt.CANCEL,
   }
 
-  usePermissionCheck(UserPermissionsInt.CanReadUsers)
+  usePermissionCheck(UserPermissionsInt.CanTrackOrder)
 
   useEffect(() => {
     restCallOrders(page, size);
@@ -74,8 +75,8 @@ export default function Orders() {
     setPage(page + 1);
   }
 
-  function handleDeleteUser(id: number): void {
-    fetch(`http://localhost:8090/user/${id}`, {
+  function handleDeleteOrder(id: number): void {
+    fetch(`http://localhost:8090/order/${id}`, {
       method: "DELETE",
       headers: {
         'Authorization': 'Bearer ' + window.localStorage.getItem('jwt')
@@ -84,8 +85,8 @@ export default function Orders() {
       .then(() => restCallOrders(page, size))
   }
 
-  function isAllowed(permission: string): boolean {
-    return localStorage.getItem(permission) !== null && localStorage.getItem(permission) === 'true'
+  function isAllowed(permission: number): boolean {
+    return localStorage.getItem(permissionsStorage) !== null && (Number(localStorage.getItem(permissionsStorage)) & permission) > 0
   }
 
   return (
@@ -94,16 +95,16 @@ export default function Orders() {
 
       <div className="px-32 flex flex-col gap-4">
         <div className="flex flex-col gap-6">
-          {/* TODO Make this grid */}
           <div className="flex flex-row gap-4 justify-between">
-            {/* TODO Make this grid */}
+            { isAllowed(UserPermissionsInt.CanSearchOrder) &&
             <div className="flex flex-row place-items-center gap-5 max-w-80">
               <Label>User Email:</Label>
               <Input name="email" value={searchParams.userEmail} onChange={e => setSearchParams({ ...searchParams, userEmail: e.target.value })} />
-            </div>
+            </div>}
             <div className="flex flex-row place-items-center gap-5 max-w-80">
               <Label>Date from:</Label>
               <Input name="date_from" value={searchParams.startDate} onChange={e => setSearchParams({ ...searchParams, startDate: e.target.value })} />
+              <DateTimePicker24h/>
             </div>
             <div className="flex flex-row place-items-center gap-5 max-w-80">
               <Label>Date to:</Label>
@@ -111,7 +112,7 @@ export default function Orders() {
             </div>
             {Object.entries(orderStatuses).map(([key, value]) => (
               <div key={key} className="flex flex-row place-items-center gap-5 max-w-80">
-                <Checkbox id={key} onClick={() => setSearchParams({...searchParams, status: searchParams.status ^ value})} />
+                <Checkbox id={key} onClick={() => setSearchParams({ ...searchParams, status: searchParams.status ^ value })} />
                 <Label htmlFor={key}>{key.toUpperCase().replaceAll("_", " ")}</Label>
               </div>))
             }
@@ -129,13 +130,13 @@ export default function Orders() {
                 <TableHead>Active</TableHead>
                 <TableHead>Dishes</TableHead>
                 <TableHead>Scheduled</TableHead>
-                {isAllowed(UserPermissions.CanDeleteUsers) && <TableHead >Action</TableHead>}
+                {isAllowed(UserPermissionsInt.CanDeleteUsers) && <TableHead >Action</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
               {orders.map((order: Order) => (
                 <TableRow key={order.id}>
-                  <TableCell>{order.createdBy.email}</TableCell>
+                  {isAllowed(UserPermissionsInt.CanDeleteUsers) && <TableCell>{order.createdBy.email}</TableCell>}
                   <TableCell>{order.status.replaceAll("_", " ")}</TableCell>
                   <TableCell>{order.active ? <CiCircleCheck className="text-green-600 size-6" /> : <CiCircleRemove className="text-red-600 size-6" />}</TableCell>
                   <TableCell>{
@@ -144,7 +145,8 @@ export default function Orders() {
                     ))
                   }</TableCell>
                   <TableCell>{order.createdDate}</TableCell>
-                  {order.status === OrderStatus.ORDERED && <TableCell><Button className="bg-red-700 hover:bg-red-800">Cancel</Button></TableCell>}
+                  {isAllowed(UserPermissionsInt.CanDeleteUsers) && order.status === OrderStatus.ORDERED && order.active && 
+                  <TableCell><Button className="bg-red-700 hover:bg-red-800" onClick={() => handleDeleteOrder(order.id)}>Cancel</Button></TableCell>}
                 </TableRow>
               ))}
             </TableBody>

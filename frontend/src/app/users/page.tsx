@@ -1,6 +1,7 @@
 "use client"
 
 import Header from "@/components/Header/Header"
+import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { usePermissionCheck } from "@/hooks/credentials"
 import { permissionsStorage, User, UserPermissions, UserPermissionsInt } from "@/types/user"
@@ -105,7 +106,7 @@ export default function Users() {
                   <TableCell onClick={() => handleRowPress(user.id)}>{user.email}</TableCell>
                   <TableCell onClick={() => handleRowPress(user.id)}>{
                     Object.entries(user.permissions).filter(([_, value]) => value === true).map(([key]) => (
-                      <label key={key} className="m-2 py-2 px-3 bg-slate-400 text-white rounded-2xl hover:cursor-pointer">{key}</label>
+                      <Badge key={key} className="m-1">{key}</Badge>
                     ))
                   }</TableCell>
                   {isAllowed(UserPermissionsInt.CanDeleteUsers) && <TableCell><button className="bg-red-700 hover:bg-red-800 px-4 py-2 rounded-full text-white" onClick={() => handleDeleteUser(user.id)}>Delete</button></TableCell>}
