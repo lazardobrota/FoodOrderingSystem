@@ -11,6 +11,7 @@ import com.usermanagment.backend.repository.IOrderDishRepo;
 import com.usermanagment.backend.repository.IOrderRepo;
 import com.usermanagment.backend.service.IOrderService;
 import com.usermanagment.backend.specification.OrderSpecification;
+import com.usermanagment.backend.status.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,9 +57,11 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public boolean deleteOrder(Long id) {
-        orderRepo.deleteById(id);
-        return !orderRepo.existsById(id);
+    public OrderDto deleteOrder(Long id) {
+        Order order = orderRepo.findById(id).orElseThrow(() -> new FoodException("Order not found with given id", HttpStatus.BAD_REQUEST));
+        order.setActive(false);
+        order.setStatus(OrderStatus.CANCEL.getValue());
+        return orderMapper.toOrderDto(orderRepo.save(order));
     }
 
 }

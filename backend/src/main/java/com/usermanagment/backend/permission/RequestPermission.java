@@ -20,6 +20,7 @@ public class RequestPermission {
         authorizeHttp.requestMatchers(HttpMethod.GET, "/order").hasAuthority(UserPermission.CanTrackOrder.getName());
         authorizeHttp.requestMatchers(HttpMethod.GET, "/order/{id}").hasAuthority(UserPermission.CanTrackOrder.getName());
         authorizeHttp.requestMatchers(HttpMethod.POST, "/order").hasAuthority(UserPermission.CanPlaceOrder.getName());
+        authorizeHttp.requestMatchers(HttpMethod.DELETE, "/order/{id}").hasAuthority(UserPermission.CanCancelOrder.getName());
 
         //Dish
         authorizeHttp.requestMatchers(HttpMethod.GET, "/dish").permitAll();

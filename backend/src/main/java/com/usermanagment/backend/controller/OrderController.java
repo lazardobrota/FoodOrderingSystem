@@ -48,7 +48,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteOrder(@PathVariable("id") Long id) {
+    public ResponseEntity<OrderDto> deleteOrder(@PathVariable("id") Long id) {
         return ExceptionUtils.handleResponse(() -> ResponseEntity.ok(orderService.deleteOrder(id)));
     }
 
