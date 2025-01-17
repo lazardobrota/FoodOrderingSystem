@@ -2,6 +2,7 @@ package com.usermanagment.backend.service.impl;
 
 import com.usermanagment.backend.dto.order.CreateOrderDto;
 import com.usermanagment.backend.dto.order.OrderDto;
+import com.usermanagment.backend.model.User;
 import com.usermanagment.backend.params.SearchParams;
 import com.usermanagment.backend.exception.FoodException;
 import com.usermanagment.backend.mapper.OrderMapper;
@@ -9,9 +10,11 @@ import com.usermanagment.backend.model.Order;
 import com.usermanagment.backend.model.OrderDish;
 import com.usermanagment.backend.repository.IOrderDishRepo;
 import com.usermanagment.backend.repository.IOrderRepo;
+import com.usermanagment.backend.repository.IUserRepo;
 import com.usermanagment.backend.service.IOrderService;
 import com.usermanagment.backend.specification.OrderSpecification;
 import com.usermanagment.backend.status.OrderStatus;
+import com.usermanagment.backend.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -28,6 +32,7 @@ import java.util.List;
 public class OrderService implements IOrderService {
 
     private final IOrderRepo orderRepo;
+    private final IUserRepo userRepo;
     private final IOrderDishRepo orderDishRepo;
     private final OrderMapper orderMapper;
 
@@ -40,12 +45,14 @@ public class OrderService implements IOrderService {
 
     @Override
     public OrderDto createOrder(CreateOrderDto createOrderDto) {
-        Order order = orderRepo.save(orderMapper.toOrder(createOrderDto));
+        User user =  userRepo.findByEmail(UserUtils.getEmail()).orElseThrow(() -> new FoodException("User not found with given id", HttpStatus.BAD_REQUEST));
+        Order order = orderRepo.save(orderMapper.toOrder(createOrderDto, user));
         List<OrderDish> orderDishes = createOrderDto.getDishes().stream()
                 .map(dishDto -> orderMapper.toOrderDish(order, dishDto))
                 .toList();
 
         orderDishes = orderDishRepo.saveAll(orderDishes);
+        order.setDishes(orderDishes.stream().map(OrderDish::getDish).collect(Collectors.toList()));
         return orderMapper.toOrderDto(order);
     }
 

@@ -31,5 +31,9 @@ public class RequestPermission {
         authorizeHttp.requestMatchers(HttpMethod.GET, "/ingredient").permitAll();
         authorizeHttp.requestMatchers(HttpMethod.POST, "/ingredient").hasAuthority(UserPermission.CanDeleteUsers.getName());
         authorizeHttp.requestMatchers(HttpMethod.PUT, "/ingredient").hasAuthority(UserPermission.CanDeleteUsers.getName());
+
+        //ErrorMessage
+        authorizeHttp.requestMatchers(HttpMethod.GET, "/error/order/{id}").hasAuthority(UserPermission.CanTrackOrder.getName());
+        authorizeHttp.requestMatchers(HttpMethod.POST, "/error").hasAuthority(UserPermission.CanTrackOrder.getName());
     }
 }

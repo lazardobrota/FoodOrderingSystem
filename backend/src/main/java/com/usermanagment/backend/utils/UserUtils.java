@@ -5,8 +5,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class UserUtils {
 
-    public static User getUser() {
-        return (User)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+    public static String getEmail() {
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public static int getRandomNumber(int min, int max) {
