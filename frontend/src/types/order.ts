@@ -21,6 +21,11 @@ export class SearchParams {
   status: number = 0
 }
 
+export class CartOrder {
+  createdDate: Date = new Date()
+  dishes: Dish[] = [] 
+}
+
 export enum OrderStatus {
   ORDERED     = "ordered",
   PREPARING   = "preparing",

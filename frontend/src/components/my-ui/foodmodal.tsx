@@ -9,21 +9,34 @@ import { IoMdClose } from "react-icons/io";
 
 interface FoodModalParams {
   dish: Dish
-  onClose: MouseEventHandler<HTMLDivElement> | undefined,
-  onAddToCart: MouseEventHandler<HTMLDivElement> | undefined,
+  onClose(): void,
+  onMinus(dish: Dish): void,
+  onPlus(dish: Dish): void,
 }
 
-export function FoodModal({ onClose, onAddToCart, dish }: FoodModalParams) {
+export function FoodModal({ onClose, onMinus, onPlus, dish }: FoodModalParams) {
 
   const [ingredients, setIngredients] = useState<Ingredient[]>([])
-  const [counter, setCounter] = useState<number>(1)
+  const [counter, setCounter] = useState<number>(0)
 
   function handleCheckBox(isChecked: boolean, ingredient: Ingredient): void {
-    setIngredients((prevIngredients) => (isChecked ? [...ingredients, ingredient] : ingredients.filter(item => item.id !== ingredient.id)))
+    setIngredients(isChecked ? [...ingredients, ingredient] : ingredients.filter(item => item.id !== ingredient.id))
+  }
+
+  function handleOnMinus(): void {
+    if (counter > 0) {
+      setCounter(counter - 1)
+      onMinus(dish)
+    }
+  }
+
+  function handleOnPlus(): void {
+    setCounter(counter + 1)
+    onPlus(dish)
   }
 
   return (
-    <div onClick={onClose} className="fixed size-full flex items-center justify-center bg-black bg-opacity-20">
+    <div onClick={_ => onClose()} className="fixed size-full flex items-center justify-center bg-black bg-opacity-20">
       <div onClick={e => e.stopPropagation()} className="bg-white rounded-lg shadow-xl">
         <div onClick={onClose} className="flex flex-row-reverse p-2">
           <IoMdClose className="size-8 rounded-full p-1 bg-slate-200 hover:bg-slate-300 transition-all"></IoMdClose>
@@ -49,8 +62,8 @@ export function FoodModal({ onClose, onAddToCart, dish }: FoodModalParams) {
             </div>
 
             <div className="flex flex-row gap-4 justify-between">
-              <Counter label={counter.toString()} onMinus={_ => counter > 1 ? setCounter(counter - 1) : counter} onPlus={_ => setCounter(counter + 1)} onAddOrder={onAddToCart}></Counter>
-              <Button onClick={_ => console.log(ingredients)} className="basis-2/3">Add to order     $ {counter * dish.price}.00</Button>
+              <Counter label={counter.toString()} onMinus={_ => handleOnMinus()} onPlus={_ => handleOnPlus()}></Counter>
+              <Button onClick={_ => onClose()} className="basis-2/3">Add to order     $ {counter * dish.price}.00</Button>
             </div>
           </div>
         </div>

@@ -14,9 +14,12 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
+interface DateTimePicker24Params {
+  date: Date,
+  setDate(data: Date): void
+}
 
-export function DateTimePicker24h() {
-  const [date, setDate] = React.useState<Date>();
+export function DateTimePicker24h({date, setDate}: DateTimePicker24Params) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const hours = Array.from({ length: 24 }, (_, i) => i);

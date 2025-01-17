@@ -104,7 +104,7 @@ export default function Orders() {
             <div className="flex flex-row place-items-center gap-5 max-w-80">
               <Label>Date from:</Label>
               <Input name="date_from" value={searchParams.startDate} onChange={e => setSearchParams({ ...searchParams, startDate: e.target.value })} />
-              <DateTimePicker24h/>
+              {/* <DateTimePicker24h/> */}
             </div>
             <div className="flex flex-row place-items-center gap-5 max-w-80">
               <Label>Date to:</Label>
@@ -140,8 +140,8 @@ export default function Orders() {
                   <TableCell>{order.status.replaceAll("_", " ")}</TableCell>
                   <TableCell>{order.active ? <CiCircleCheck className="text-green-600 size-6" /> : <CiCircleRemove className="text-red-600 size-6" />}</TableCell>
                   <TableCell>{
-                    order.dishes.map((dish: Dish) => (
-                      <Badge className="m-1" key={dish.id}>{dish.name}</Badge>
+                    order.dishes.map((dish: Dish, index) => (
+                      <Badge className="m-1" key={index}>{dish.name}</Badge>
                     ))
                   }</TableCell>
                   <TableCell>{order.createdDate}</TableCell>

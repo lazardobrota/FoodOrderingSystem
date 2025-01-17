@@ -8,10 +8,9 @@ interface CounterParams {
   label: string
   onMinus: MouseEventHandler<HTMLDivElement> | undefined,
   onPlus: MouseEventHandler<HTMLDivElement> | undefined,
-  onAddOrder: MouseEventHandler<HTMLDivElement> | undefined,
 }
 
-export function Counter({label, onMinus, onPlus, onAddOrder}: CounterParams) {
+export function Counter({label, onMinus, onPlus}: CounterParams) {
   return (
     <div className="flex flex-row gap-4 items-center">
 
