@@ -27,6 +27,7 @@ export default function Header() {
         <button onClick={() => router.push("/home")} className="text-2xl px-6 py-4">User Managment</button>
       </div>
       <div className="flex flex-row justify-between gap-9 text-xl">
+        {isAllowed(UserPermissionsInt.CanPlaceOrder)  && <button className="hover:bg-slate-100 px-6 py-4 rounded-xl transition-all duration-200" onClick={() => router.push("/errormessage")}>Error Message</button>}
         {isAllowed(UserPermissionsInt.CanDeleteUsers) && <button className="hover:bg-slate-100 px-6 py-4 rounded-xl transition-all duration-200" onClick={() => router.push("/dish/new")}>New Dish</button>}
         {doesExist("jwt")                             && <button className="hover:bg-slate-100 px-6 py-4 rounded-xl transition-all duration-200" onClick={() => router.push("/orders/new")}>New Order</button>}
         {doesExist("jwt")                             && <button className="hover:bg-slate-100 px-6 py-4 rounded-xl transition-all duration-200" onClick={() => router.push("/orders")}>My Orders</button>}
