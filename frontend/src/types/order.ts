@@ -14,6 +14,12 @@ export interface DateParams {
   givenDate: string
 }
 
+export interface UpdateOrderStatus {
+  orderId: number,
+  orderStatus: OrderStatus,
+  active: boolean
+}
+
 export class SearchParams {
   userEmail: string = ""
   startDate: string = ""

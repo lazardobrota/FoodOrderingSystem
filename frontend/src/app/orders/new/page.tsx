@@ -12,6 +12,8 @@ import { TiShoppingCart } from "react-icons/ti";
 import { format } from "date-fns";
 import { checkStatusCode } from "@/errors/statusCode";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function NewOrder() {
 
@@ -53,19 +55,21 @@ export default function NewOrder() {
 
 	function makeOrder(): void {
 		fetch(`http://localhost:8090/order`, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + window.localStorage.getItem('jwt'),
-        'Content-Type': 'application/json'
-      },
+			method: 'POST',
+			headers: {
+				'Authorization': 'Bearer ' + window.localStorage.getItem('jwt'),
+				'Content-Type': 'application/json'
+			},
 			body: JSON.stringify({
 				createdDate: format(cartOrder.createdDate, "yyyy-MM-dd HH:mm:ss"),
 				dishes: cartOrder.dishes
 			})
 		}).then(res => checkStatusCode(res, "Invalid Data"))
 			.then(data => {
-				console.log(data)
-				// router.push("/orders")
+				router.push("/orders")
+			})
+			.catch(err => {
+				toast.error(err.message)
 			})
 	}
 
@@ -108,6 +112,7 @@ export default function NewOrder() {
 			{dishModal && dishSelected !== null && <FoodModal onMinus={handleOnMinus} onPlus={handleOnPlus} onClose={onClose} dish={dishSelected} />}
 			{cartModal && <CartModal makeOrder={makeOrder} setDate={setDate} cart={cartOrder} onClose={() => setCartModal(false)} onRemove={removeFromList}></CartModal>}
 
+			<Toaster richColors />
 		</div>
 	)
 }

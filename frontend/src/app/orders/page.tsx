@@ -10,13 +10,22 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { usePermissionCheck } from "@/hooks/credentials";
 import { Dish } from "@/types/dish";
-import { Order, OrderStatus, OrderStatusInt, SearchParams } from "@/types/order";
+import { Order, OrderStatus, OrderStatusInt, SearchParams, UpdateOrderStatus } from "@/types/order";
 import { permissionsStorage, UserPermissions, UserPermissionsInt } from "@/types/user";
 import { useRouter } from "next/navigation";
 import { MouseEvent, useEffect, useState } from "react";
 import { CiCircleCheck, CiCircleRemove } from "react-icons/ci";
+import { StompSessionProvider, useSubscription } from "react-stomp-hooks";
 
-export default function Orders() {
+export default function OrdersSocket() {
+  return (
+    <StompSessionProvider url={"http://localhost:8090/food-backend"}>
+      <Orders></Orders>
+    </StompSessionProvider>
+  )
+}
+
+export function Orders() {
   const [orders, setOrders] = useState<Order[]>([])
   const [page, setPage] = useState<number>(0);
   const [isLastPage, setLastPage] = useState<boolean>(false);
@@ -35,6 +44,15 @@ export default function Orders() {
 
   usePermissionCheck(UserPermissionsInt.CanTrackOrder)
 
+  useSubscription('/order/status', (message) => {
+    const status: UpdateOrderStatus = JSON.parse(message.body)
+    setOrders((prevOrders) => 
+      prevOrders.map((order: Order) =>
+        order.id === status.orderId ? {...order, status: status.orderStatus, active: status.active} : order
+      )
+    )
+  });
+
   useEffect(() => {
     restCallOrders(page, size);
   }, [])
@@ -51,6 +69,21 @@ export default function Orders() {
         setOrders(data.content)
         setLastPage(data.last)
       })
+  }
+
+  function groupDishes(dishes: Dish[]): { dish: Dish; amount: number }[] {
+    const itemMap = new Map<number, { dish: Dish; amount: number }>();
+
+    dishes.forEach((dish) => {
+      if (itemMap.has(dish.id)) {
+        itemMap.get(dish.id)!.amount++;
+      } else {
+        // Add a new entry for the item
+        itemMap.set(dish.id, { dish, amount: 1 });
+      }
+    });
+
+    return Array.from(itemMap.values());
   }
 
 
@@ -96,11 +129,11 @@ export default function Orders() {
       <div className="px-32 flex flex-col gap-4">
         <div className="flex flex-col gap-6">
           <div className="flex flex-row gap-4 justify-between">
-            { isAllowed(UserPermissionsInt.CanSearchOrder) &&
-            <div className="flex flex-row place-items-center gap-5 max-w-80">
-              <Label>User Email:</Label>
-              <Input name="email" value={searchParams.userEmail} onChange={e => setSearchParams({ ...searchParams, userEmail: e.target.value })} />
-            </div>}
+            {isAllowed(UserPermissionsInt.CanSearchOrder) &&
+              <div className="flex flex-row place-items-center gap-5 max-w-80">
+                <Label>User Email:</Label>
+                <Input name="email" value={searchParams.userEmail} onChange={e => setSearchParams({ ...searchParams, userEmail: e.target.value })} />
+              </div>}
             <div className="flex flex-row place-items-center gap-5 max-w-80">
               <Label>Date from:</Label>
               <Input name="date_from" value={searchParams.startDate} onChange={e => setSearchParams({ ...searchParams, startDate: e.target.value })} />
@@ -140,13 +173,13 @@ export default function Orders() {
                   <TableCell>{order.status.replaceAll("_", " ")}</TableCell>
                   <TableCell>{order.active ? <CiCircleCheck className="text-green-600 size-6" /> : <CiCircleRemove className="text-red-600 size-6" />}</TableCell>
                   <TableCell>{
-                    order.dishes.map((dish: Dish, index) => (
-                      <Badge className="m-1" key={index}>{dish.name}</Badge>
+                    groupDishes(order.dishes).map(({ dish, amount }, index) => (
+                      <Badge className="m-1" key={index}> {amount} | {dish.name}</Badge>
                     ))
                   }</TableCell>
                   <TableCell>{order.createdDate}</TableCell>
-                  {isAllowed(UserPermissionsInt.CanDeleteUsers) && order.status === OrderStatus.ORDERED && order.active && 
-                  <TableCell><Button className="bg-red-700 hover:bg-red-800" onClick={() => handleDeleteOrder(order.id)}>Cancel</Button></TableCell>}
+                  {isAllowed(UserPermissionsInt.CanDeleteUsers) && order.status === OrderStatus.ORDERED && order.active &&
+                    <TableCell><Button className="bg-red-700 hover:bg-red-800" onClick={() => handleDeleteOrder(order.id)}>Cancel</Button></TableCell>}
                 </TableRow>
               ))}
             </TableBody>
