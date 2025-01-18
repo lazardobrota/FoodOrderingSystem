@@ -35,5 +35,8 @@ public class RequestPermission {
         //ErrorMessage
         authorizeHttp.requestMatchers(HttpMethod.GET, "/error/order/{id}").hasAuthority(UserPermission.CanTrackOrder.getName());
         authorizeHttp.requestMatchers(HttpMethod.POST, "/error").hasAuthority(UserPermission.CanTrackOrder.getName());
+
+        //WebSockets
+        authorizeHttp.requestMatchers("/food-backend/**").permitAll();
     }
 }

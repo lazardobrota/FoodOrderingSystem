@@ -22,6 +22,9 @@ public interface IOrderRepo extends JpaRepository<Order, Long>, JpaSpecification
     @Query("select o from CustomerOrder o where o.active = true and o.scheduleDate < ?1")
     List<Order> findAllActiveBeforeDate(LocalDateTime date);
 
+    @Query("select count(o) from CustomerOrder o where o.status in ?1")
+    int countOrderByStatuses(List<Integer> statuses);
+
     @Query("SELECT o FROM CustomerOrder o " +
             "WHERE   (o.active = true) " +
             "   AND ((o.status = :orderedStatus   AND o.scheduleDate <= :orderedThreshold) " +

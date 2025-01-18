@@ -16,12 +16,14 @@ import com.usermanagment.backend.specification.OrderSpecification;
 import com.usermanagment.backend.status.OrderStatus;
 import com.usermanagment.backend.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +47,13 @@ public class OrderService implements IOrderService {
 
     @Override
     public OrderDto createOrder(CreateOrderDto createOrderDto) {
+
+        if (createOrderDto.getCreatedDate().isBefore(LocalDateTime.now())) {
+            int currActive = orderRepo.countOrderByStatuses(List.of(OrderStatus.PREPARING.getValue(), OrderStatus.IN_DELIVERY.getValue()));
+            if (currActive > 3)
+                throw new FoodException("To many Orders right now", HttpStatus.TOO_MANY_REQUESTS);
+        }
+
         User user =  userRepo.findByEmail(UserUtils.getEmail()).orElseThrow(() -> new FoodException("User not found with given id", HttpStatus.BAD_REQUEST));
         Order order = orderRepo.save(orderMapper.toOrder(createOrderDto, user));
         List<OrderDish> orderDishes = createOrderDto.getDishes().stream()
