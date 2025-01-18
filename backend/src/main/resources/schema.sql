@@ -60,11 +60,12 @@ create table food_ordering_system.order_dish
 create table food_ordering_system.error_message
 (
     id          bigint       not null auto_increment primary key,
-    order_id    bigint       not null,
+    user_id     bigint       not null,
     date        datetime     not null,
+    status      int          not null,
     message     varchar(255) not null,
-    constraint order__fk2
-        foreign key (order_id) references customer_order (id) on delete cascade
+    constraint user__fk2
+        foreign key (user_id) references user (id) on delete cascade
 );
 
 #Empty Table

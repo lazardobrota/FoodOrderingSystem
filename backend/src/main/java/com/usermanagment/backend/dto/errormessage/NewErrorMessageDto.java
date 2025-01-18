@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewErrorMesageDto {
+public class NewErrorMessageDto {
 
-    private OrderDto order;
+    private String status;
 
     private LocalDateTime date;
 

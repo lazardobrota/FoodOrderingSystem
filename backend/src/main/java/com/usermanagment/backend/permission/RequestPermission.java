@@ -33,7 +33,7 @@ public class RequestPermission {
         authorizeHttp.requestMatchers(HttpMethod.PUT, "/ingredient").hasAuthority(UserPermission.CanDeleteUsers.getName());
 
         //ErrorMessage
-        authorizeHttp.requestMatchers(HttpMethod.GET, "/error/order/{id}").hasAuthority(UserPermission.CanTrackOrder.getName());
+        authorizeHttp.requestMatchers(HttpMethod.GET, "/error").hasAuthority(UserPermission.CanPlaceOrder.getName());
         authorizeHttp.requestMatchers(HttpMethod.POST, "/error").hasAuthority(UserPermission.CanTrackOrder.getName());
 
         //WebSockets

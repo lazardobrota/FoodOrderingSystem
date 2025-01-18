@@ -38,6 +38,15 @@ public enum OrderStatus {
         return CANCEL;
     }
 
+    public static int getInt(String name) {
+        for (OrderStatus orderStatus : OrderStatus.values()) {
+            if (orderStatus.name.equals(name))
+                return orderStatus.value;
+        }
+
+        return CANCEL.value;
+    }
+
     public static List<OrderStatus> toList(int orderStatuses) {
         List<OrderStatus> result = new ArrayList<>();
         for (OrderStatus orderStatus : OrderStatus.values()) {

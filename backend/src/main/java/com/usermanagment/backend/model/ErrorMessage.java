@@ -18,18 +18,22 @@ public class ErrorMessage {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false)
     private LocalDateTime date;
 
     @Column(nullable = false)
+    private int status;
+
+    @Column(nullable = false)
     private String message;
 
-    public ErrorMessage(Order order, LocalDateTime date, String message) {
-        this.order = order;
+    public ErrorMessage(User user, LocalDateTime date, int status, String message) {
+        this.user = user;
         this.date = date;
+        this.status = status;
         this.message = message;
     }
 }
