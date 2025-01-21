@@ -32,12 +32,16 @@ public class Order {
     @Column(name = "schedule_date", nullable = false)
     private LocalDateTime scheduleDate;
 
+    @Version
+    private int version;
+
     @ManyToMany
     @JoinTable(
             name = "order_dish",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id"))
     private List<Dish> dishes;
+
 
     public Order(int status, User createdBy, boolean active, LocalDateTime scheduleDate) {
         this.status = status;

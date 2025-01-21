@@ -37,11 +37,12 @@ create table food_ordering_system.dish_ingredient
 
 create table food_ordering_system.customer_order
 (
-    id           bigint  not null auto_increment primary key,
-    status       int     not null,
-    createdBy    bigint  not null,
+    id           bigint   not null auto_increment primary key,
+    status       int      not null,
+    createdBy    bigint   not null,
     scheduleDate datetime not null,
-    active       bool not null,
+    active       bool     not null,
+    version      int      not null,
     constraint user___fk
         foreign key (createdBy) references user (id) on delete cascade
 );

@@ -21,9 +21,11 @@ import com.usermanagment.backend.status.OrderStatus;
 import com.usermanagment.backend.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,10 +87,14 @@ public class OrderService implements IOrderService {
     @Transactional
     @Override
     public OrderDto deleteOrder(Long id) {
-        Order order = orderRepo.findById(id).orElseThrow(() -> new FoodException("Order not found with given id", HttpStatus.BAD_REQUEST));
-        order.setActive(false);
-        order.setStatus(OrderStatus.CANCEL.getValue());
-        return orderMapper.toOrderDto(orderRepo.save(order));
+        try {
+            Order order = orderRepo.findById(id).orElseThrow(() -> new FoodException("Order not found with given id", HttpStatus.BAD_REQUEST));
+            order.setActive(false);
+            order.setStatus(OrderStatus.CANCEL.getValue());
+            return orderMapper.toOrderDto(orderRepo.save(order));
+        } catch (ObjectOptimisticLockingFailureException | StaleObjectStateException e) {
+            throw new FoodException("Order not up to date", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

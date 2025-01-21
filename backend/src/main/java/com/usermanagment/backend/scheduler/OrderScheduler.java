@@ -1,6 +1,7 @@
 package com.usermanagment.backend.scheduler;
 
 import com.usermanagment.backend.dto.order.UpdateOrderStatusDto;
+import com.usermanagment.backend.exception.FoodException;
 import com.usermanagment.backend.model.ErrorMessage;
 import com.usermanagment.backend.model.Order;
 import com.usermanagment.backend.repository.IErrorMessageRepo;
@@ -9,8 +10,11 @@ import com.usermanagment.backend.service.impl.ErrorMessageService;
 import com.usermanagment.backend.status.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.StaleObjectStateException;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,15 +55,20 @@ public class OrderScheduler {
                 order.setActive(false);
         }
 
-        orderRepo.saveAll(orders);
+        try {
+            orderRepo.saveAll(orders);
 
-        for (Order order : sendStatusChangeOrders) {
-            try {
-                updateStatus(order.getId(), OrderStatus.getOrderStatus(order.getStatus()), order.isActive());
-            }catch (MessagingException e){
-                log.error("Error while sending order status of order {}", order.getId(), e);
+            for (Order order : sendStatusChangeOrders) {
+                try {
+                    updateStatus(order.getId(), OrderStatus.getOrderStatus(order.getStatus()), order.isActive());
+                }catch (MessagingException e){
+                    log.error("Error while sending order status of order {}", order.getId(), e);
+                }
             }
+        } catch (ObjectOptimisticLockingFailureException | StaleObjectStateException e) {
+            System.out.println(HttpStatus.BAD_REQUEST + " | Order not up to date");
         }
+
     }
 
     private List<Order> calculateNewList(List<Order> orders) {
@@ -78,7 +87,6 @@ public class OrderScheduler {
 
         orderRepo.saveAll(removeOrders);
         errorMessageRepo.saveAll(errorMessages);
-        System.out.println(errorMessages);
 
         return orders.subList(0, 3);
     }
