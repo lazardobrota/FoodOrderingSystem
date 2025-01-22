@@ -36,7 +36,7 @@ export function FoodModal({ onClose, onMinus, onPlus, dish }: FoodModalParams) {
   }
 
   return (
-    <div onClick={_ => onClose()} className="fixed size-full flex items-center justify-center bg-black bg-opacity-20">
+    <div onClick={_ => onClose()} className="fixed size-full flex items-center justify-center bg-black bg-opacity-20 z-10">
       <div onClick={e => e.stopPropagation()} className="bg-white rounded-lg shadow-xl">
         <div onClick={onClose} className="flex flex-row-reverse p-2">
           <IoMdClose className="size-8 rounded-full p-1 bg-slate-200 hover:bg-slate-300 transition-all"></IoMdClose>

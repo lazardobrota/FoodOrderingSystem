@@ -25,7 +25,7 @@ export function CartModal({ cart, onClose, onRemove, setDate, makeOrder }: CartP
   }
 
   return (
-    <div onClick={_ => onClose()} className="fixed size-full flex flex-row-reverse bg-black bg-opacity-20 transition-all">
+    <div onClick={_ => onClose()} className="fixed size-full flex flex-row-reverse bg-black bg-opacity-20 transition-all z-10">
       <div onClick={e => e.stopPropagation()} className="flex flex-col gap-4 bg-white">
         <div onClick={onClose} className="flex flex-row-reverse p-2">
           <IoMdClose className="size-8 rounded-full p-1 bg-slate-200 hover:bg-slate-300 transition-all cursor-pointer"></IoMdClose>

@@ -88,7 +88,7 @@ export default function Header() {
       <div>
         <button onClick={() => router.push("/home")} className="text-xl px-6 py-4">Foodie</button>
       </div>
-      <div className="flex flex-row justify-between gap-9 text-xl">
+      <nav className="flex flex-row justify-between gap-9 text-xl">
         <NavigationMenu>
           <NavigationMenuList>
 
@@ -138,7 +138,7 @@ export default function Header() {
             }
           </NavigationMenuList>
         </NavigationMenu>
-      </div>
+      </nav>
     </header>
   )
 }
