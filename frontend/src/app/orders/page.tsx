@@ -67,6 +67,7 @@ export function Orders() {
       .then(res => res.json())
       .then(data => {
         setOrders(data.content)
+        setPage(0);
         setLastPage(data.last)
       })
   }
@@ -150,7 +151,7 @@ export function Orders() {
               </div>))
             }
             <div>
-              <Button onClick={() => restCallOrders(page, size)}>Search</Button>
+              <Button onClick={() => restCallOrders(0, size)}>Search</Button>
             </div>
           </div>
 
