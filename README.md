@@ -56,7 +56,7 @@ user.secret.key=JWT_SECRET_KEY
 
 <p>
 
-  You can use this site https://generate-random.org/encryption-key-generator?count=1&bytes=32&cipher=aes-256-cbc&string=&password= or any other to generate your secret key, its only important for it to be 256-bit or more
+  You can use this site https://generate-random.org/encryption-key-generator or any other to generate your secret key, its only important for it to be 256-bit or more
 </p>
 
 #### <ins>Frontend setup:</ins>
