@@ -18,7 +18,7 @@
 <p>
   
   1. Choosen your SQL database management system create schema. I Recommend to name it `food_ordering_system` since schema.sql is already setup in a project for easer removing, cleaning and adding of tables but you don't have to. Everything will still work but you will need to write your own SQL script if you want to clean tables.
-  2. Connect Database to the project in IDE of your choice.
+  2. Connect Database schema to the project in IDE of your choice.
 </p>
 
 ##### Spring Boot
