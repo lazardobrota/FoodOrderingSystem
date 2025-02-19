@@ -1,11 +1,31 @@
-# User management
-<p>To be written</p>
+# Food Ordering
+<p>
+  Choose dishes, order food and wait for delivery through status changes and enjoy! Watch out what permissions you have though. Admins can see orders of all clients, identify invalid orders, manage all existing accounts...
+</p>
+
+## Getting Started
+<h4><ins>Requirements:</ins></h4>
+<p>
+
+  - JDK 21 or above
+  - Some SQL database
+  - Node.js 20 or above
+</p>
 
 #### <ins>Backend setup:</ins>
+
+##### Database
+<p>
+  
+  1. Choosen your SQL database management system create schema. I Recommend to name it `food_ordering_system` since schema.sql is already setup in a project for easer removing, cleaning and adding of tables but you don't have to. Everything will still work but you will need to write your own SQL script if you want to clean tables.
+  2. Connect Database to the project in IDE of your choice.
+</p>
+
+##### Spring Boot
 <p>
 
   1. Navigate to your project's main source directory: `backend/src/main/resources`
-  3. Inside the `resources` folder, create a new file named `application.properties`(File is case-sensitive).
+  2. Inside the `resources` folder, create a new file named `application.properties`(File is case-sensitive).
 </p>
 <p>
   
@@ -21,9 +41,7 @@
 spring.application.name=backend
 
 # Server
-server.port=SERVER_PORT 
-server.servlet.context-path=SPRING_BASE_URL
-
+server.port=8090
 
 # Datastore
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -40,3 +58,34 @@ user.secret.key=JWT_SECRET_KEY
 
   You can use this site https://generate-random.org/encryption-key-generator?count=1&bytes=32&cipher=aes-256-cbc&string=&password= or any other to generate your secret key, its only important for it to be 256-bit or more
 </p>
+
+#### <ins>Frontend setup:</ins>
+<p>
+  
+  Inside `frontend` folder, open terminal at the root of the project and write:
+  ```markdown
+npm install
+```
+After everything is downloaded, in the same terminal write:
+```markdown
+npm run dev
+```
+
+Enjoy!!
+</p>
+
+## Features & Technologies 
+#### <ins>Backend:</ins>
+<p>
+  
+  - Java
+  - Spring Boot
+  - Spring Security
+  - Maven
+  - SQL
+  - JWT
+  - Web Sockets
+  - React
+  - TypeScript
+  - Tailwindcss
+</p> 
